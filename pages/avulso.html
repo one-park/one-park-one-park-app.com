@@ -95,11 +95,9 @@
     </div>
 
     <div id="cadastro" class="container">
-      <!-- faça um seletor ou botão que eu possa ecolher qual formulario quero preencher o de saida ou de entrada  -->
       <div class="row">
         <h1 id="avs">Avulso Entrada</h1>
         <div class="col-12 col-md-6 input-group">
-          <!-- quero que esse formulario envie para rota http://127.0.0.1:5000/avulso-entrada esse é o formulario de entrada do cliente -->
           <input
             type="text"
             id="cliente-entrada"
@@ -171,14 +169,11 @@
           >
             Enviar
           </button>
-          <!-- ao clicar nesse botão eu quero que envie os dados para a rota http://127.0.0.1:5000/avulso-entrada -->
         </div>
       </div>
     </div>
 
     <div id="cadastro-saida" class="container">
-      <!-- aqui é o avuso saida esse formulario tem que dar a saida do cliente cadastrado na rota http://127.0.0.1:5000/avulso-entrada
-      então ao salvar esse formulario na rota http://127.0.0.1:5000/avulso-saida ele tem que deletar o id correspondente ao cliente que entrou  -->
       <div class="row">
         <h1 id="avs">Avulso Saida</h1>
         <div class="col-12 col-md-6 input-group">
@@ -495,69 +490,7 @@
           this.value = now.toLocaleTimeString("pt-BR", options);
         });
     </script>
-    <!-- <script>
-      async function submitSaidaForm() {
-        const form = document.getElementById("cadastro-saida");
-
-        const cliente = document.getElementById("cliente-saida").value;
-        const placa = document.getElementById("placa-saida").value;
-
-        try {
-          // Salvar a saída avulsa
-          const responseSaida = await fetch(
-            "http://127.0.0.1:5000/avulso-saida",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                cliente: cliente,
-                telefone: document.getElementById("tel-saida").value,
-                veiculo: document.getElementById("veiculo-saida").value,
-                placa: placa,
-                horarioEntrada: document.getElementById("horario-entrada-get")
-                  .value,
-                horarioSaida: document.getElementById("horario-saida").value,
-                dataEntrada: document.getElementById("data-entrada-get").value,
-                servicoAdicional: document.getElementById(
-                  "servico-adicional-get"
-                ).value,
-                valor: document.getElementById("valor").value,
-              }),
-            }
-          );
-          const resultSaida = await responseSaida.json();
-          if (!responseSaida.ok) {
-            throw new Error(resultSaida.error || "Erro ao salvar a saída");
-          }
-
-          // Deletar o registro de entrada
-          const responseEntrada = await fetch(
-            "http://127.0.0.1:5000/avulso-entrada",
-            {
-              method: "DELETE",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                cliente: cliente,
-                placa: placa,
-              }),
-            }
-          );
-
-          const resultEntrada = await responseEntrada.json();
-          if (!responseEntrada.ok) {
-            throw new Error(resultEntrada.error || "Erro ao deletar a entrada");
-          }
-
-          // Mostrar modal de sucesso
-          const myModal = new bootstrap.Modal(
-            document.getElementById("successModal")
-          );
-          myModal.show();
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
-    </script> -->
+    !--
     <script>
       async function submitSaidaForm() {
         const form = document.getElementById("cadastro-saida");
@@ -588,7 +521,6 @@
               }),
             }
           );
-
           const resultSaida = await responseSaida.json();
           if (!responseSaida.ok) {
             throw new Error(resultSaida.error || "Erro ao salvar a saída");
@@ -596,11 +528,14 @@
 
           // Deletar o registro de entrada
           const responseEntrada = await fetch(
-            `https://oneparkestacionamento.pythonanywhere.com/avulso-entrada?cliente=${encodeURIComponent(
-              cliente
-            )}&placa=${encodeURIComponent(placa)}`,
+            "https://oneparkestacionamento.pythonanywhere.com//avulso-entrada",
             {
               method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                cliente: cliente,
+                placa: placa,
+              }),
             }
           );
 
@@ -620,6 +555,72 @@
       }
     </script>
     <script>
+      async function submitSaidaForm() {
+        const cliente = document.getElementById("cliente-saida").value;
+        const placa = document.getElementById("placa-saida").value;
+
+        // Dados a serem enviados para a rota /caixa
+        const caixaData = {
+          data: new Date().toISOString().split("T")[0], // Data no formato YYYY-MM-DD
+          descricao: "Saída avulso",
+          valor: document.getElementById("valor").value,
+        };
+
+        try {
+          // Enviar os dados para a rota /caixa
+          const responseCaixa = await fetch(
+            "https://oneparkestacionamento.pythonanywhere.com/caixa",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(caixaData),
+            }
+          );
+
+          if (!responseCaixa.ok) {
+            throw new Error("Erro ao registrar no caixa");
+          }
+
+          // Salvar a saída avulsa
+          const responseSaida = await fetch(
+            "https://oneparkestacionamento.pythonanywhere.com/avulso-saida",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                cliente: cliente,
+                telefone: document.getElementById("tel-saida").value,
+                veiculo: document.getElementById("veiculo-saida").value,
+                placa: placa,
+                horarioEntrada: document.getElementById("horario-entrada-get")
+                  .value,
+                horarioSaida: document.getElementById("horario-saida").value,
+                dataEntrada: document.getElementById("data-entrada-get").value,
+                servicoAdicional: document.getElementById(
+                  "servico-adicional-get"
+                ).value,
+                valor: document.getElementById("valor").value,
+              }),
+            }
+          );
+
+          const resultSaida = await responseSaida.json();
+          if (!responseSaida.ok) {
+            throw new Error(resultSaida.error || "Erro ao salvar a saída");
+          }
+
+          // Mostrar modal de sucesso
+          const myModal = new bootstrap.Modal(
+            document.getElementById("successModal")
+          );
+          myModal.show();
+        } catch (error) {
+          console.error("Error:", error);
+          alert(`Ocorreu um erro ao salvar a saída: ${error.message}`);
+        }
+      }
+    </script>
+    <script>
       document
         .getElementById("sub-entrada")
         .addEventListener("click", function (event) {
@@ -635,19 +636,22 @@
           const servicoAdicional =
             document.getElementById("servico-adicional").value;
 
-          fetch("https://oneparkestacionamento.pythonanywhere.com/avulso-entrada", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              cliente,
-              telefone,
-              veiculo,
-              placa,
-              horarioEntrada,
-              dataEntrada,
-              servicoAdicional,
-            }),
-          })
+          fetch(
+            "https://oneparkestacionamento.pythonanywhere.com/avulso-entrada",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                cliente,
+                telefone,
+                veiculo,
+                placa,
+                horarioEntrada,
+                dataEntrada,
+                servicoAdicional,
+              }),
+            }
+          )
             .then((response) => response.json())
             .then(() => {
               const myModal = new bootstrap.Modal(

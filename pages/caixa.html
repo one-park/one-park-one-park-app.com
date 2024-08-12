@@ -462,13 +462,16 @@
             };
 
             // Enviar os dados para o servidor
-            fetch(`https://oneparkestacionamento.pythonanywhere.com/caixa/${id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            })
+            fetch(
+              `https://oneparkestacionamento.pythonanywhere.com/caixa/${id}`,
+              {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              }
+            )
               .then((response) => response.json())
               .then((result) => {
                 console.log("Sucesso:", result);
@@ -490,9 +493,12 @@
         document
           .getElementById("confirmDelete")
           .addEventListener("click", function () {
-            fetch(`https://oneparkestacionamento.pythonanywhere.com/caixa/${recordIdToDelete}`, {
-              method: "DELETE",
-            })
+            fetch(
+              `https://oneparkestacionamento.pythonanywhere.com/caixa/${recordIdToDelete}`,
+              {
+                method: "DELETE",
+              }
+            )
               .then((response) => response.json())
               .then(() => {
                 deleteModal.hide();
@@ -671,90 +677,6 @@
       document.addEventListener("DOMContentLoaded", formatCurrencyInTable);
     </script>
 
-    <!-- <script>
-      function formatCurrency(value) {
-        return value.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        });
-      }
-
-      // Função para calcular o fechamento
-      function formatCurrency(value) {
-        return value.toLocaleString("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        });
-      }
-
-      // Função para calcular o fechamento
-      function calculateFechamento() {
-        fetch("http://127.0.0.1:5000/caixa")
-          .then((response) => response.json())
-          .then((data) => {
-            console.log("Dados recebidos da API:", data); // Log dos dados recebidos
-            let lucro = 0;
-            let despesa = 0;
-
-            data.forEach((item) => {
-              let valor;
-
-              // Verifica se item.valor é uma string ou número e processa adequadamente
-              if (typeof item.valor === "string") {
-                // Remove o símbolo da moeda e os separadores de milhares
-                const cleanValue = item.valor
-                  .replace(/[^\d,]/g, "") // Remove tudo exceto números e vírgulas
-                  .replace(",", "."); // Substitui a vírgula decimal por ponto
-
-                valor = parseFloat(cleanValue);
-              } else if (typeof item.valor === "number") {
-                valor = item.valor;
-              } else {
-                console.error("Valor inesperado:", item.valor);
-                return;
-              }
-
-              console.log(
-                `Descrição: ${item.descricao}, Valor Original: ${item.valor}, Valor Convertido: ${valor}`
-              ); // Log dos valores
-
-              // Identifica lucro ou despesa com base na descrição
-              if (
-                item.descricao.includes("Mensalidade") ||
-                item.descricao.includes("Saída avulso") ||
-                item.descricao.includes("Lavagem")
-              ) {
-                lucro += valor;
-              } else if (
-                item.descricao.includes("GASTOS") ||
-                item.descricao.includes("DESPESAS")
-              ) {
-                despesa += valor;
-              }
-            });
-
-            // Log dos resultados finais
-            console.log("Lucro Total:", lucro);
-            console.log("Despesa Total:", despesa);
-            console.log("Total (Lucro - Despesa):", lucro - despesa);
-
-            // Atualiza o modal com os valores calculados
-            document.getElementById("lucros").textContent =
-              formatCurrency(lucro);
-            document.getElementById("despesas").textContent =
-              formatCurrency(despesa);
-            document.getElementById("total").textContent = formatCurrency(
-              lucro - despesa
-            );
-          })
-          .catch((error) => console.error("Erro:", error));
-      }
-
-      // Adiciona o evento de clique ao botão para calcular o fechamento
-      document
-        .getElementById("calcularFechamento")
-        .addEventListener("click", calculateFechamento);
-    </script> -->
     <script>
       function formatCurrency(value) {
         return value.toLocaleString("pt-BR", {
@@ -825,18 +747,21 @@
             document.getElementById("total").textContent = totalFormatado;
 
             // Faz o POST na rota /caixa-fechamento após o cálculo
-            fetch("https://oneparkestacionamento.pythonanywhere.com/caixa-fechamento", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                data: new Date().toLocaleDateString("pt-BR"),
-                lucro: lucroFormatado, // Envia o valor formatado com R$
-                despesa: despesaFormatada, // Envia o valor formatado com R$
-                total: totalFormatado, // Envia o valor formatado com R$
-              }),
-            })
+            fetch(
+              "https://oneparkestacionamento.pythonanywhere.com/caixa-fechamento",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  data: new Date().toLocaleDateString("pt-BR"),
+                  lucro: lucroFormatado, // Envia o valor formatado com R$
+                  despesa: despesaFormatada, // Envia o valor formatado com R$
+                  total: totalFormatado, // Envia o valor formatado com R$
+                }),
+              }
+            )
               .then((response) => {
                 if (response.ok) {
                   // Exibe o modal de confirmação de caixa atualizado
