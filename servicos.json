@@ -1,0 +1,12 @@
+{
+  "servicos": [
+    {
+      "nome": "LAVAGEM SIMPLES",
+      "valor": "R$ 45,00"
+    },
+    {
+      "nome": "LAVAGEM C/CERA",
+      "valor": "R$ 48,00"
+    }
+  ]
+}

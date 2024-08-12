@@ -1,0 +1,75 @@
+:root {
+  font-family: "Roboto", sans-serif;
+}
+
+@media (min-width: 600px) {
+  ul.dropdown-menu.show {
+    margin: 1px -10px;
+    width: 100%;
+  }
+  .custom-img {
+    width: 80%; /* Ajuste a largura conforme necessário */
+  }
+}
+
+@media (max-width: 991.98px) {
+  /* Para telas menores que lg */
+  .navbar-nav {
+    display: none;
+  }
+  .navbar-nav.show {
+    display: block;
+  }
+}
+
+@media (min-width: 768px) {
+  .input-group input {
+    width: 60%;
+  }
+  .input-group {
+    flex-direction: row; /* Mantém a imagem ao lado do campo de input */
+    align-items: center;
+    gap: 0.5rem; /* Espaçamento reduzido em telas pequenas */
+  }
+  .input-group img {
+    max-width: 20px; /* Ajuste o tamanho dos ícones em telas menores */
+  }
+}
+
+input,
+button {
+  margin-bottom: 1rem;
+}
+
+.btn-custom {
+  width: 75%;
+  height: 40px;
+}
+
+#clientes {
+  margin-top: 2rem; /* Ajusta a posição do formulário para o topo */
+}
+
+@media (max-width: 600px) {
+  /* Ajusta a posição do formulário para centralizá-lo verticalmente */
+  #consultar {
+    padding-top: 4rem; /* Ajuste conforme necessário */
+  }
+}
+
+.navbar-toggler {
+  margin-top: 0.5rem; /* Ajuste para centralizar verticalmente o ícone do menu */
+  padding: 0.25rem 0.75rem; /* Ajuste o padding conforme necessário */
+}
+
+.navbar-toggler img {
+  max-width: 30px; /* Ajuste o tamanho do ícone do menu */
+}
+
+@media (min-width: 700px) {
+  #btn-entrada,
+  #btn-saida {
+    margin: 2rem;
+  }
+}
+

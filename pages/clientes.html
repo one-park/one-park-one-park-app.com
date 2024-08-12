@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../style/mobile.css" />
+    <link rel="stylesheet" href="../style/style.css" />
+    <title>Clientes Avulsos</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" style="color: #495057">One Park</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            aria-label="Toggle navigation"
+          ></button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Página Inicial</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./avulso.html">Avulso</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./consultar.html">Registros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./busca-avancada.html"
+                  >Gerenciamento</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./comprovante.html">Comprovantes</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="d-flex justify-content-center align-items-center mt-4">
+      <div id="clientes" class="container">
+        <div class="row">
+          <h1 id="cds-cli">Cadastro</h1>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="cliente"
+              class="form-control"
+              placeholder="Cliente"
+            />
+            <img src="../img/clientes.png" alt="cliente" />
+          </div>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="tel"
+              class="form-control"
+              placeholder="Telefone"
+            />
+            <img src="../img/whatsapp.png" alt="telefone" />
+          </div>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="veiculo"
+              class="form-control"
+              placeholder="Veículo"
+            />
+            <img src="../img/protecao.png" alt="veículo" />
+          </div>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="placa"
+              class="form-control"
+              placeholder="Placa"
+            />
+            <img src="../img/placa-de-carro.png" alt="placa" />
+          </div>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="mensalista"
+              class="form-control"
+              placeholder="Data De Vencimento Do Mensalista"
+            />
+            <img src="../img/salario (1).png" alt="mensalista" />
+          </div>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="mensalidade"
+              class="form-control"
+              placeholder="Valor Da Mensalidade"
+            />
+            <img src="../img/cifrao.png" alt="mensalidade" />
+          </div>
+          <div class="col-12 d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary btn-custom">
+              Enviar
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="responseModal"
+      tabindex="-1"
+      aria-labelledby="responseModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="responseModalLabel">Mensagem</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body" id="responseMessage">
+            <!-- Mensagem será inserida aqui pelo JavaScript -->
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-light text-center py-3">
+      <div class="container">
+        <p class="mb-0">© 2024 One Park. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Função para converter letras em maiúsculas enquanto o usuário digita
+        function convertToUpperCase(event) {
+          event.target.value = event.target.value.toUpperCase();
+        }
+
+        // Seleciona os inputs de cliente e placa
+        const clienteInput = document.getElementById("cliente");
+        const placaInput = document.getElementById("placa");
+
+        // Adiciona o evento de input para os inputs de cliente e placa
+        clienteInput.addEventListener("input", convertToUpperCase);
+        placaInput.addEventListener("input", convertToUpperCase);
+      });
+
+      document
+        .querySelector('button[type="submit"]')
+        .addEventListener("click", function () {
+          const data = {
+            cliente: document.getElementById("cliente").value,
+            telefone: document.getElementById("tel").value,
+            veiculo: document.getElementById("veiculo").value,
+            placa: document.getElementById("placa").value,
+            mensalista: document.getElementById("mensalista").value,
+            mensalidade: document.getElementById("mensalidade").value,
+          };
+
+          fetch("https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              document.getElementById("responseMessage").textContent =
+                data.message;
+              const responseModal = new bootstrap.Modal(
+                document.getElementById("responseModal")
+              );
+              responseModal.show();
+            })
+            .catch((error) => console.error("Erro:", error));
+        });
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../script.js"></script>
+  </body>
+</html>

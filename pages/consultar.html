@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../style/style.css" />
+    <style>
+      #results {
+        margin-top: 20px;
+      }
+
+      #results section {
+        margin-bottom: 20px;
+      }
+
+      #results h3 {
+        margin-bottom: 10px;
+        font-size: 1.5rem;
+        color: #007bff;
+      }
+
+      #results ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+
+      #results li {
+        background-color: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 10px;
+        word-wrap: break-word;
+      }
+
+      #results li p {
+        margin: 0;
+        font-size: 1rem;
+      }
+
+      .data-field {
+        font-weight: bold;
+      }
+
+      @media (max-width: 767.98px) {
+        #results h3 {
+          font-size: 1.25rem;
+        }
+
+        #results li {
+          font-size: 0.875rem;
+        }
+      }
+    </style>
+
+    <title>Consultar</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" style="color: #495057">One Park</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            aria-label="Toggle navigation"
+          ></button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Página Inicial</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./avulso.html">Avulso</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./clientes.html">Clientes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./busca-avancada.html"
+                  >Gerenciamento</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./comprovante.html">Comprovantes</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main
+      class="d-flex justify-content-center align-items-center"
+      style="min-height: 100vh"
+    >
+      <div id="consultar" class="container">
+        <div class="row">
+          <h1 id="cts">Consultar Cliente</h1>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="cliente"
+              class="form-control"
+              placeholder="Cliente"
+            />
+            <img src="../img/clientes.png" alt="cliente" />
+          </div>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="tel"
+              class="form-control"
+              placeholder="Telefone"
+            />
+            <img src="../img/whatsapp.png" alt="telefone" />
+          </div>
+          <div class="col-12 col-md-6 input-group mb-3">
+            <input
+              type="text"
+              id="placa"
+              class="form-control"
+              placeholder="Placa"
+            />
+            <img src="../img/placa-de-carro.png" alt="placa" />
+          </div>
+          <div class="col-12 d-flex justify-content-center mb-3">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="searchClient()"
+            >
+              Buscar
+            </button>
+          </div>
+          <div class="col-12">
+            <h2>Resultados</h2>
+            <div id="results">
+              <!-- Resultados serão exibidos aqui -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="bg-light text-center py-3">
+      <div class="container">
+        <p class="mb-0">© 2024 One Park. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const inputsToUppercase = document.querySelectorAll("#cliente, #placa");
+
+        inputsToUppercase.forEach((input) => {
+          input.addEventListener("input", function () {
+            this.value = this.value.toUpperCase();
+          });
+        });
+
+        const searchButton = document.getElementById("searchButton");
+        if (searchButton) {
+          searchButton.addEventListener("click", searchClient);
+        } else {
+          console.error("Botão de busca não encontrado");
+        }
+      });
+
+      function searchClient() {
+        const cliente = document
+          .getElementById("cliente")
+          .value.trim()
+          .toUpperCase();
+        const placa = document
+          .getElementById("placa")
+          .value.trim()
+          .toUpperCase();
+
+        function fetchData(url) {
+          return fetch(url)
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Dados recebidos de", url, ":", data); // Adicione isso para depuração
+              return Array.isArray(data) ? data : []; // Assegura que data é um array
+            })
+            .catch((error) => {
+              console.error("Erro:", error);
+              return [];
+            });
+        }
+
+        Promise.all([
+          fetchData("https://oneparkestacionamento.pythonanywhere.com/avulso-saida-all"),
+          fetchData("https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes"),
+          fetchData("https://oneparkestacionamento.pythonanywhere.com/avulso-entrada-all"),
+        ]).then(([saida, clientes, entrada]) => {
+          const resultsDiv = document.getElementById("results");
+          resultsDiv.innerHTML = "";
+
+          function filterDataByNameAndPlate(data) {
+            return data.filter((item) => {
+              const matchesCliente = cliente
+                ? item.cliente && item.cliente.toUpperCase().includes(cliente)
+                : true;
+              const matchesPlaca = placa
+                ? item.placa && item.placa.toUpperCase().includes(placa)
+                : true;
+              return matchesCliente && matchesPlaca;
+            });
+          }
+
+          function createList(title, items) {
+            const section = document.createElement("section");
+            const h2 = document.createElement("h3");
+            h2.textContent = title;
+            section.appendChild(h2);
+
+            if (items.length === 0) {
+              section.innerHTML += "<p>Nenhum resultado encontrado.</p>";
+              return section;
+            }
+
+            const list = document.createElement("ul");
+            items.forEach((item) => {
+              const li = document.createElement("li");
+
+              // Formatação dos dados
+              li.innerHTML = `
+            <p><span class="data-field">Cliente:</span> ${
+              item.cliente || "Não disponível"
+            }</p>
+            <p><span class="data-field">Telefone:</span> ${
+              item.telefone || "Não disponível"
+            }</p>
+            <p><span class="data-field">Data de Entrada:</span> ${
+              item.data_entrada || "Não disponível"
+            }</p>
+            <p><span class="data-field">Horário de Entrada:</span> ${
+              item.horario_entrada || "Não disponível"
+            }</p>
+            <p><span class="data-field">Horário de Saída:</span> ${
+              item.horario_saida || "Não disponível"
+            }</p>
+            <p><span class="data-field">Placa:</span> ${
+              item.placa || "Não disponível"
+            }</p>
+            <p><span class="data-field">Veiculo:</span> ${
+              item.veiculo || "Não disponível"
+            }</p>
+            <p><span class="data-field">Serviço Adicional:</span> ${
+              item.servico_adicional || "Não disponível"
+            }</p>
+            <p><span class="data-field">Tempo:</span> ${
+              item.tempo || "Não disponível"
+            }</p>
+            <p><span class="data-field">Valor:</span> ${
+              item.valor || "Não disponível"
+            }</p>
+            <p><span class="data-field">Mensalista:</span> ${
+              item.mensalista || "Não disponível"
+            }</p>
+            <p><span class="data-field">Mensalidade:</span> ${
+              item.mensalidade || "Não disponível"
+            }</p>
+          `;
+
+              list.appendChild(li);
+            });
+
+            section.appendChild(list);
+            return section;
+          }
+
+          const filteredSaida = filterDataByNameAndPlate(saida);
+          const filteredClientes = filterDataByNameAndPlate(clientes);
+          const filteredEntrada = filterDataByNameAndPlate(entrada);
+
+          resultsDiv.appendChild(createList("Saída", filteredSaida));
+          resultsDiv.appendChild(createList("Clientes", filteredClientes));
+          resultsDiv.appendChild(createList("Entrada", filteredEntrada));
+        });
+      }
+    </script>
+  </body>
+</html>

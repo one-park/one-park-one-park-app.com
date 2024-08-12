@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      @media (max-width: 700px) {
+        .btn-warning {
+          color: #fff; /* Cor do texto */
+          font-size: 12px; /* Tamanho da fonte */
+          padding: 10px 20px; /* Espaçamento interno */
+          border-radius: 4px; /* Bordas arredondadas */
+        }
+
+        .btn-sm {
+          font-size: 12px;
+          padding: 8px 16px;
+          width: 70px;
+        }
+      }
+    </style>
+    <link rel="stylesheet" href="../style/mobile.css" />
+    <link rel="stylesheet" href="../style/style.css" />
+    <title>Busca Avançada Gerenciamento</title>
+    <style>
+      body,
+      html {
+        height: 100%;
+      }
+      .content {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .main-content {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" style="color: #495057">One Park</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            aria-label="Toggle navigation"
+          ></button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Página Inicial</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./busca-avancada.html"
+                  >Gerenciamento</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./avulso.html">Avulso</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./consultar.html">Registros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./clientes.html">Clientes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./comprovante.html">Comprovantes</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <div class="container mt-4">
+      <h2 class="mb-4">Caixa Diário</h2>
+
+      <!-- Formulário para adicionar novos serviços e valores -->
+      <div class="mb-4">
+        <!-- Esse Formulario nao esta salvando os dados mais funciona legal a formatação dos campos  -->
+        <h4>Adicionar Novo Registro</h4>
+        <form id="add-form">
+          <div class="mb-3">
+            <label for="data" class="form-label">Data</label>
+            <input
+              type="text"
+              id="data"
+              class="form-control"
+              placeholder="DD/MM/AAAA"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="valor" class="form-label">Valor</label>
+            <input type="text" id="valor" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição</label>
+            <input type="text" id="descricao" class="form-control" required />
+          </div>
+          <button type="submit" class="btn btn-primary">Adicionar</button>
+        </form>
+      </div>
+
+      <!-- Tabela para exibir os registros -->
+      <table class="table mt-3">
+        <thead>
+          <tr>
+            <th>Data</th>
+            <th>Valor</th>
+            <th>Descrição</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="caixa-table-body">
+          <!-- Registros do caixa serão inseridos aqui -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Modal de Confirmação de Exclusão -->
+    <div
+      class="modal fade"
+      id="deleteModal"
+      tabindex="-1"
+      aria-labelledby="deleteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">
+              Confirmar Exclusão
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Tem certeza que deseja excluir este registro?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmDelete">
+              Excluir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ja esse modal ele não exlcui o devido registro segundo seu id ele não exclui nada  -->
+
+    <!-- Modal de Edição -->
+    <div
+      class="modal fade"
+      id="editModal"
+      tabindex="-1"
+      aria-labelledby="editModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editModalLabel">Editar Registro</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="edit-form">
+              <div class="mb-3">
+                <label for="edit-data" class="form-label">Data</label>
+                <input
+                  type="text"
+                  id="edit-data"
+                  class="form-control"
+                  required
+                  oninput="cleanInputs()"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="edit-valor" class="form-label">Valor</label>
+                <input
+                  type="text"
+                  id="edit-valor"
+                  class="form-control"
+                  required
+                  oninput="cleanInputs()"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="edit-descricao" class="form-label">Descrição</label>
+                <input
+                  type="text"
+                  id="edit-descricao"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <input type="hidden" id="edit-id" />
+              <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Botão para abrir o modal -->
+    <div class="container mt-4">
+      <div class="d-flex justify-content-end">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-toggle="modal"
+          data-bs-target="#fechamentoModal"
+        >
+          Calcular Fechamento
+        </button>
+      </div>
+    </div>
+    <footer class="bg-light text-center py-3">
+      <div class="container">
+        <p class="mb-0">© 2024 One Park. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+    <!-- Modal de Fechamento -->
+    <div
+      class="modal fade"
+      id="fechamentoModal"
+      tabindex="-1"
+      aria-labelledby="fechamentoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="fechamentoModalLabel">
+              Fechamento Diário
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Lucros:</strong></p>
+            <p id="lucros">-</p>
+            <p><strong>Despesas:</strong></p>
+            <p id="despesas">-</p>
+            <p><strong>Total:</strong></p>
+            <p id="total">-</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="calcularFechamento"
+            >
+              Calcular Fechamento
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal de Caixa Atualizado -->
+    <div
+      class="modal fade"
+      id="modalCaixaAtualizado"
+      tabindex="-1"
+      aria-labelledby="modalCaixaAtualizadoLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCaixaAtualizadoLabel">
+              Caixa Atualizado
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            O fechamento de caixa foi realizado com sucesso. Os valores foram
+            registrados e o caixa está atualizado.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+            >
+              Ok
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../script.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const dataInput = document.getElementById("data");
+        const valorInput = document.getElementById("valor");
+        const descricaoInput = document.getElementById("descricao");
+        const editDataInput = document.getElementById("edit-data");
+        const editValorInput = document.getElementById("edit-valor");
+        const editDescricaoInput = document.getElementById("edit-descricao");
+        const editIdInput = document.getElementById("edit-id");
+        const deleteModal = new bootstrap.Modal(
+          document.getElementById("deleteModal")
+        );
+        const editModal = new bootstrap.Modal(
+          document.getElementById("editModal")
+        );
+        let recordIdToDelete = null;
+
+        function loadCaixa() {
+          fetch("https://oneparkestacionamento.pythonanywhere.com/caixa")
+            .then((response) => response.json())
+            .then((data) => {
+              const tableBody = document.getElementById("caixa-table-body");
+              tableBody.innerHTML = ""; // Limpa o conteúdo da tabela
+              data.forEach((item) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                <td>${item.data}</td>
+                <td>${item.valor}</td>
+                <td>${item.descricao}</td>
+                <td>
+                  <button class="btn btn-warning btn-sm" onclick="openEditModal(${item.id}, '${item.data}', '${item.valor}', '${item.descricao}')">Editar</button>
+                  <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${item.id})">Deletar</button>
+                </td>
+              `;
+                tableBody.appendChild(row);
+                formatCurrencyInTable();
+              });
+            });
+        }
+
+        // Função para formatar a data para o formato DD/MM/YYYY
+        function formatDate(dateString) {
+          const [year, month, day] = dateString.split("-");
+          return `${day}/${month}/${year}`;
+        }
+
+        // Inicializa o campo de data com a data atual
+        const today = new Date().toISOString().split("T")[0];
+        dataInput.value = formatDate(today);
+
+        // Atualiza o valor do campo de data com o formato DD/MM/YYYY
+        dataInput.addEventListener("input", function () {
+          const value = this.value.replace(/\D/g, ""); // Remove caracteres não numéricos
+          if (value.length > 2 && value.length <= 4) {
+            this.value = `${value.slice(0, 2)}/${value.slice(2)}`;
+          } else if (value.length > 4) {
+            this.value = `${value.slice(0, 2)}/${value.slice(
+              2,
+              4
+            )}/${value.slice(4)}`;
+          }
+        });
+
+        // Formatar o valor com prefixo "R$" e aceitar apenas números
+        valorInput.addEventListener("input", function () {
+          // Remove caracteres não numéricos
+          let value = this.value.replace(/\D/g, "");
+
+          // Formata o valor com duas casas decimais
+          if (value) {
+            // Adiciona um ponto decimal para permitir a formatação correta
+            value = (parseInt(value) / 100).toFixed(2);
+
+            // Adiciona o prefixo "R$" e formata o valor com vírgula como separador decimal
+            this.value = `R$ ${value.replace(".", ",")}`;
+          } else {
+            this.value = ""; // Se não houver valor, limpa o campo
+          }
+        });
+
+        // Converter a descrição para letras maiúsculas
+        descricaoInput.addEventListener("input", function () {
+          this.value = this.value.toUpperCase();
+        });
+
+        // Função para abrir o modal de edição
+        window.openEditModal = function (id, data, valor, descricao) {
+          editDataInput.value = formatDate(data);
+          editValorInput.value = `R$ ${parseFloat(valor)
+            .toFixed(2)
+            .replace(".", ",")}`;
+          editDescricaoInput.value = descricao;
+          editIdInput.value = id;
+          editModal.show();
+        };
+
+        // Adicionar a lógica para editar registro
+        document
+          .getElementById("edit-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const formattedDate = editDataInput.value
+              .split("/")
+              .reverse()
+              .join("-");
+            const formattedValor = editValorInput.value
+              .replace("R$ ", "")
+              .replace(",", ".");
+            const descricao = editDescricaoInput.value;
+            const id = editIdInput.value;
+
+            // Criar objeto com os dados para envio
+            const data = {
+              data: formattedDate,
+              valor: formattedValor,
+              descricao: descricao,
+            };
+
+            // Enviar os dados para o servidor
+            fetch(`https://oneparkestacionamento.pythonanywhere.com/caixa/${id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((result) => {
+                console.log("Sucesso:", result);
+                editModal.hide();
+                loadCaixa();
+              })
+              .catch((error) => {
+                console.error("Erro:", error);
+              });
+          });
+
+        // Função para abrir o modal de confirmação de exclusão
+        window.openDeleteModal = function (id) {
+          recordIdToDelete = id;
+          deleteModal.show();
+        };
+
+        // Adicionar a lógica para excluir registro
+        document
+          .getElementById("confirmDelete")
+          .addEventListener("click", function () {
+            fetch(`https://oneparkestacionamento.pythonanywhere.com/caixa/${recordIdToDelete}`, {
+              method: "DELETE",
+            })
+              .then((response) => response.json())
+              .then(() => {
+                deleteModal.hide();
+                loadCaixa();
+              })
+              .catch((error) => {
+                console.error("Erro:", error);
+              });
+          });
+
+        loadCaixa();
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("add-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const dataInput = document.getElementById("data").value;
+            const valorInput = document.getElementById("valor").value;
+            const descricaoInput = document.getElementById("descricao").value;
+
+            // Formatar a data para YYYY-MM-DD
+            const formattedDate = dataInput.split("/").reverse().join("-");
+
+            // Remover "R$ " e substituir "," por "."
+            const formattedValor = valorInput
+              .replace("R$ ", "")
+              .replace(",", ".");
+
+            // Criar objeto com os dados para envio
+            const data = {
+              data: formattedDate,
+              valor: formattedValor,
+              descricao: descricaoInput,
+            };
+
+            // Enviar os dados para o servidor
+            fetch("https://oneparkestacionamento.pythonanywhere.com/caixa", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(data),
+            })
+              .then((response) => response.json())
+              .then((result) => {
+                console.log("Sucesso:", result);
+                document.getElementById("add-form").reset();
+              })
+              .catch((error) => {
+                console.error("Erro:", error);
+              });
+          });
+      });
+    </script>
+    <script>
+      // Função para limpar os inputs
+      function cleanInputs() {
+        // Obter os elementos dos inputs
+        const editDataInput = document.getElementById("edit-data");
+        const editValorInput = document.getElementById("edit-valor");
+
+        console.log("Verificando inputs...");
+
+        // Limpar o campo 'edit-data' se contiver "undefined/undefined/"
+        if (editDataInput.value.includes("undefined/undefined/")) {
+          console.log("Removendo 'undefined/undefined/' de edit-data");
+          editDataInput.value = editDataInput.value.replace(
+            "undefined/undefined/",
+            ""
+          );
+        }
+
+        // Limpar o campo 'edit-valor' se contiver "NaN"
+        if (editValorInput.value.includes("NaN")) {
+          console.log("Removendo 'NaN' de edit-valor");
+          editValorInput.value = editValorInput.value.replace("NaN", "");
+        }
+      }
+
+      // Adiciona o evento oninput aos campos
+      document
+        .getElementById("edit-data")
+        .addEventListener("input", cleanInputs);
+      document
+        .getElementById("edit-valor")
+        .addEventListener("input", cleanInputs);
+
+      // Adiciona o evento show.bs.modal ao modal de edição
+      document.addEventListener("DOMContentLoaded", function () {
+        const editModal = document.getElementById("editModal");
+
+        // Inicializa o modal com Bootstrap
+        const bootstrapEditModal = new bootstrap.Modal(editModal);
+
+        // Adiciona o manipulador de evento show.bs.modal
+        editModal.addEventListener("show.bs.modal", function () {
+          // Aguarde o modal estar completamente visível antes de limpar os campos
+          setTimeout(cleanInputs, 0);
+        });
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const editModal = new bootstrap.Modal(
+          document.getElementById("editModal")
+        );
+
+        function cleanInputs() {
+          // Obter os elementos dos inputs
+          const editDataInput = document.getElementById("edit-data");
+          const editValorInput = document.getElementById("edit-valor");
+
+          console.log("Verificando inputs...");
+
+          // Limpar o campo 'edit-data' se contiver "undefined/undefined/"
+          if (editDataInput.value.includes("undefined/undefined/")) {
+            console.log("Removendo 'undefined/undefined/' de edit-data");
+            editDataInput.value = editDataInput.value.replace(
+              "undefined/undefined/",
+              ""
+            );
+          }
+
+          // Limpar o campo 'edit-valor' se contiver "NaN"
+          if (editValorInput.value.includes("NaN")) {
+            console.log("Removendo 'NaN' de edit-valor");
+            editValorInput.value = editValorInput.value.replace("NaN", "");
+          }
+        }
+
+        // Adiciona o evento show.bs.modal ao modal de edição
+        document
+          .getElementById("editModal")
+          .addEventListener("show.bs.modal", function () {
+            // Limpa os inputs quando o modal estiver prestes a ser exibido
+            cleanInputs();
+          });
+
+        // Adiciona o evento hidden.bs.modal ao modal de edição para garantir que o modal se feche corretamente
+        document
+          .getElementById("editModal")
+          .addEventListener("hidden.bs.modal", function () {
+            // Limpa os campos ao fechar o modal (opcional)
+            // editDataInput.value = "";
+            // editValorInput.value = "";
+          });
+      });
+    </script>
+    <script>
+      function formatCurrencyInTable() {
+        const tableBody = document.getElementById("caixa-table-body");
+        const rows = tableBody.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+          const valueCell = rows[i].getElementsByTagName("td")[1]; // A coluna de valor é a segunda coluna
+
+          if (valueCell) {
+            let value = valueCell.textContent.trim();
+            // Remove "R$ " se já estiver presente para evitar duplicação
+            if (value.startsWith("R$ ")) {
+              value = value.substring(2).trim();
+            }
+            // Adiciona "R$ " apenas se não estiver presente
+            if (!value.startsWith("R$")) {
+              valueCell.textContent = `R$ ${value}`;
+            }
+          }
+        }
+      }
+
+      // Chame essa função sempre após atualizar ou carregar os registros
+      document.addEventListener("DOMContentLoaded", formatCurrencyInTable);
+    </script>
+
+    <!-- <script>
+      function formatCurrency(value) {
+        return value.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+      }
+
+      // Função para calcular o fechamento
+      function formatCurrency(value) {
+        return value.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+      }
+
+      // Função para calcular o fechamento
+      function calculateFechamento() {
+        fetch("http://127.0.0.1:5000/caixa")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Dados recebidos da API:", data); // Log dos dados recebidos
+            let lucro = 0;
+            let despesa = 0;
+
+            data.forEach((item) => {
+              let valor;
+
+              // Verifica se item.valor é uma string ou número e processa adequadamente
+              if (typeof item.valor === "string") {
+                // Remove o símbolo da moeda e os separadores de milhares
+                const cleanValue = item.valor
+                  .replace(/[^\d,]/g, "") // Remove tudo exceto números e vírgulas
+                  .replace(",", "."); // Substitui a vírgula decimal por ponto
+
+                valor = parseFloat(cleanValue);
+              } else if (typeof item.valor === "number") {
+                valor = item.valor;
+              } else {
+                console.error("Valor inesperado:", item.valor);
+                return;
+              }
+
+              console.log(
+                `Descrição: ${item.descricao}, Valor Original: ${item.valor}, Valor Convertido: ${valor}`
+              ); // Log dos valores
+
+              // Identifica lucro ou despesa com base na descrição
+              if (
+                item.descricao.includes("Mensalidade") ||
+                item.descricao.includes("Saída avulso") ||
+                item.descricao.includes("Lavagem")
+              ) {
+                lucro += valor;
+              } else if (
+                item.descricao.includes("GASTOS") ||
+                item.descricao.includes("DESPESAS")
+              ) {
+                despesa += valor;
+              }
+            });
+
+            // Log dos resultados finais
+            console.log("Lucro Total:", lucro);
+            console.log("Despesa Total:", despesa);
+            console.log("Total (Lucro - Despesa):", lucro - despesa);
+
+            // Atualiza o modal com os valores calculados
+            document.getElementById("lucros").textContent =
+              formatCurrency(lucro);
+            document.getElementById("despesas").textContent =
+              formatCurrency(despesa);
+            document.getElementById("total").textContent = formatCurrency(
+              lucro - despesa
+            );
+          })
+          .catch((error) => console.error("Erro:", error));
+      }
+
+      // Adiciona o evento de clique ao botão para calcular o fechamento
+      document
+        .getElementById("calcularFechamento")
+        .addEventListener("click", calculateFechamento);
+    </script> -->
+    <script>
+      function formatCurrency(value) {
+        return value.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
+      }
+
+      // Função para calcular o fechamento
+      function calculateFechamento() {
+        fetch("https://oneparkestacionamento.pythonanywhere.com/caixa")
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Dados recebidos da API:", data); // Log dos dados recebidos
+            let lucro = 0;
+            let despesa = 0;
+
+            data.forEach((item) => {
+              let valor;
+
+              // Verifica se item.valor é uma string ou número e processa adequadamente
+              if (typeof item.valor === "string") {
+                // Remove o símbolo da moeda e os separadores de milhares
+                const cleanValue = item.valor
+                  .replace(/[^\d,]/g, "") // Remove tudo exceto números e vírgulas
+                  .replace(",", "."); // Substitui a vírgula decimal por ponto
+
+                valor = parseFloat(cleanValue);
+              } else if (typeof item.valor === "number") {
+                valor = item.valor;
+              } else {
+                console.error("Valor inesperado:", item.valor);
+                return;
+              }
+
+              console.log(
+                `Descrição: ${item.descricao}, Valor Original: ${item.valor}, Valor Convertido: ${valor}`
+              ); // Log dos valores
+
+              // Identifica lucro ou despesa com base na descrição
+              if (
+                item.descricao.includes("Mensalidade") ||
+                item.descricao.includes("Saída avulso") ||
+                item.descricao.includes("Lavagem")
+              ) {
+                lucro += valor;
+              } else if (
+                item.descricao.includes("GASTOS") ||
+                item.descricao.includes("DESPESAS")
+              ) {
+                despesa += valor;
+              }
+            });
+
+            // Log dos resultados finais
+            console.log("Lucro Total:", lucro);
+            console.log("Despesa Total:", despesa);
+            console.log("Total (Lucro - Despesa):", lucro - despesa);
+
+            // Formata os valores com o prefixo R$
+            const lucroFormatado = formatCurrency(lucro);
+            const despesaFormatada = formatCurrency(despesa);
+            const totalFormatado = formatCurrency(lucro - despesa);
+
+            // Atualiza o modal com os valores calculados
+            document.getElementById("lucros").textContent = lucroFormatado;
+            document.getElementById("despesas").textContent = despesaFormatada;
+            document.getElementById("total").textContent = totalFormatado;
+
+            // Faz o POST na rota /caixa-fechamento após o cálculo
+            fetch("https://oneparkestacionamento.pythonanywhere.com/caixa-fechamento", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                data: new Date().toLocaleDateString("pt-BR"),
+                lucro: lucroFormatado, // Envia o valor formatado com R$
+                despesa: despesaFormatada, // Envia o valor formatado com R$
+                total: totalFormatado, // Envia o valor formatado com R$
+              }),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  // Exibe o modal de confirmação de caixa atualizado
+                  $("#modalCaixaAtualizado").modal("show");
+                } else {
+                  console.error(
+                    "Erro ao enviar dados para o fechamento de caixa."
+                  );
+                }
+              })
+              .catch((error) => console.error("Erro:", error));
+          })
+          .catch((error) => console.error("Erro:", error));
+      }
+
+      // Adiciona o evento de clique ao botão para calcular o fechamento
+      document
+        .getElementById("calcularFechamento")
+        .addEventListener("click", calculateFechamento);
+    </script>
+  </body>
+</html>

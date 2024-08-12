@@ -1,0 +1,9 @@
+clientes_avulsos:
+  - nome: "João Silva"
+    placa: "ABC1234"
+    veiculo: "Fusca"
+    entrada: "08:00"
+    saida: "10:00"
+    servico: "Lavagem"
+    valor: "R$ 50,00"
+    

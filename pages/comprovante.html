@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../style/mobile.css" />
+    <link rel="stylesheet" href="../style/style.css" />
+    <style>
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f8f9fa; /* Cor de fundo */
+        z-index: 1; /* Nível de sobreposição */
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      body {
+        padding-bottom: 60px; /* Espaço extra para evitar que o conteúdo fique escondido atrás do footer */
+      }
+      @media (min-width: 1200px) {
+        /* Container para centralizar os botões horizontalmente */
+        .button-container {
+          display: flex;
+          justify-content: center; /* Centraliza horizontalmente */
+          margin-top: 20px; /* Ajusta a distância do topo da página */
+        }
+
+        /* Garantir que os botões tenham um espaçamento entre eles */
+        .button-container button {
+          margin: 0 10px; /* Espaçamento horizontal entre os botões */
+        }
+      }
+      #modal-cli {
+        width: 300px;
+      }
+      #modal-caixa {
+        width: 300px;
+      }
+      @media (max-width: 700px) {
+        .button-container {
+          display: grid;
+          justify-content: center;
+          margin-top: 20px; /* Ajusta a distância do topo da página */
+        }
+        #modal-cli {
+          width: 100%;
+        }
+        #modal-caixa {
+          width: 100%;
+        }
+        .text-center {
+          button {
+            width: 80%;
+          }
+        }
+        .modal-footer.d-flex.justify-content-center.w-100 {
+          button {
+            width: 80%;
+          }
+        }
+      }
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f8f9fa; /* Cor de fundo */
+        z-index: 0; /* Nível de sobreposição */
+        text-align: center;
+        padding: 10px 0;
+      }
+      .modal-content {
+        z-index: 1;
+      }
+      body {
+        padding-bottom: 60px;
+      }
+    </style>
+    <title>Comprovantes</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" style="color: #495057">One Park</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            aria-label="Toggle navigation"
+          ></button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Página Inicial</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./avulso.html">Avulso</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./consultar.html">Registros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./clientes.html">Clientes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./busca-avancada.html"
+                  >Gerenciamento</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <!-- Botão para abrir o modal -->
+    <div class="button-container">
+      <button
+        type="button"
+        class="btn btn-primary"
+        data-bs-toggle="modal"
+        data-bs-target="#comprovanteModal"
+        id="modal-cli"
+      >
+        Gerar Comprovante
+      </button>
+
+      <button
+        type="button"
+        class="btn btn-primary"
+        onclick="abrirModalCaixaDoDia()"
+        id="modal-caixa"
+      >
+        Caixa do Dia
+      </button>
+    </div>
+
+    <!-- Modal para gerar comprovantes -->
+    <div
+      class="modal fade"
+      id="comprovanteModal"
+      tabindex="-1"
+      aria-labelledby="comprovanteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="comprovanteModalLabel">
+              Gerar Comprovante
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="comprovanteForm">
+              <div class="mb-3">
+                <label for="tipoCliente" class="form-label"
+                  >Tipo de Cliente</label
+                >
+                <select
+                  class="form-select"
+                  id="tipoCliente"
+                  name="tipoCliente"
+                  required
+                >
+                  <option value="avulso">Cliente Avulso</option>
+                  <option value="mensalista">Cliente Mensalista</option>
+                </select>
+              </div>
+
+              <!-- Dados para Clientes Avulsos -->
+              <div id="avulsoFields">
+                <div class="mb-3">
+                  <label for="clienteAvulso" class="form-label"
+                    >Nome do Cliente</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clienteAvulso"
+                    name="clienteAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="placaAvulso" class="form-label"
+                    >Placa do Veículo</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="placaAvulso"
+                    name="placaAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="veiculoAvulso" class="form-label">Veículo</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="veiculoAvulso"
+                    name="veiculoAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="entradaAvulso" class="form-label"
+                    >Horário de Entrada</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="entradaAvulso"
+                    name="entradaAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="saidaAvulso" class="form-label"
+                    >Horário de Saída</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="saidaAvulso"
+                    name="saidaAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="servicoAvulso" class="form-label"
+                    >Serviço Adicional</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="servicoAvulso"
+                    name="servicoAvulso"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="valorAvulso" class="form-label">Valor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorAvulso"
+                    name="valorAvulso"
+                    required
+                  />
+                  <div class="mb-3">
+                    <label for="razaoAvulso" class="form-label"
+                      >Razão Social</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="razaoAvulso"
+                      name="razaoAvulso"
+                      value="One Park"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="enderecoAvulso" class="form-label"
+                    >Endereço</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="enderecoAvulso"
+                    name="enderecoAvulso"
+                      value="R. Urutuba, 118 São Paulo - SP, 04053-020"
+                    required
+                  />
+                </div>
+
+                <div class="text-center">
+                  <button
+                    type="button"
+                    class="btn btn-primary mx-2"
+                    id="avulsoComprovante"
+                    onclick="gerarComprovanteClienteAvulso()"
+                  >
+                    Gerar Comprovante
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary mx-2"
+                    data-bs-dismiss="modal"
+                  >
+                    Fechar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Dados para Clientes Mensalistas -->
+              <div id="mensalistaFields" style="display: none">
+                <div class="mb-3">
+                  <label for="clienteMensalista" class="form-label"
+                    >Nome do Cliente</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clienteMensalista"
+                    name="clienteMensalista"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="placaMensalista" class="form-label"
+                    >Placa do Veículo</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="placaMensalista"
+                    name="placaMensalista"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="veiculoMensalista" class="form-label"
+                    >Veículo</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="veiculoMensalista"
+                    name="veiculoMensalista"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="vencimentoMensalista" class="form-label"
+                    >Data de Vencimento</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="vencimentoMensalista"
+                    name="vencimentoMensalista"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="valorMensalista" class="form-label">Valor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorMensalista"
+                    name="valorMensalista"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <div class="mb-3">
+                    <label for="razaoCliente" class="form-label"
+                      >Razão Social</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="razaoCliente"
+                      name="razaoCliente"
+                      value="One Park"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="enderecoCliente" class="form-label"
+                    >Endereço</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="enderecoCliente"
+                    name="enderecoCliente"
+                    value="R. Urutuba, 118 São Paulo - SP, 04053-020"
+                    required
+                  />
+                </div>
+                <div class="text-center">
+                  <button
+                    type="button"
+                    class="btn btn-primary mx-2"
+                    id="clienteComprovante"
+                    onclick="gerarComprovanteClienteMensalista()"
+                  >
+                    Gerar Comprovante
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary mx-2"
+                    data-bs-dismiss="modal"
+                  >
+                    Fechar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para Fechamento de Caixa -->
+    <div
+      class="modal fade"
+      id="caixaDoDiaModal"
+      tabindex="-1"
+      aria-labelledby="caixaDoDiaModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="caixaDoDiaModalLabel">
+              Fechamento de Caixa do Dia
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="caixaDoDiaForm">
+              <div class="mb-3">
+                <label for="caixaDia" class="form-label">Data</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="caixaDia"
+                  name="caixaDia"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="despesasDia" class="form-label">Despesas</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="despesasDia"
+                  name="despesasDia"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="lucrosDia" class="form-label">Lucros</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lucrosDia"
+                  name="lucrosDia"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="totalDia" class="form-label">Total</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="totalDia"
+                  name="totalDia"
+                  required
+                />
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer d-flex justify-content-center w-100">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="gerarComprovanteCaixa"
+              onclick="gerarComprovanteCaixaDoDia()"
+            >
+              Gerar Comprovante
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-light text-center py-3">
+      <div class="container">
+        <p class="mb-0">© 2024 One Park. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="../script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+      document
+        .getElementById("tipoCliente")
+        .addEventListener("change", function () {
+          var avulsoFields = document.getElementById("avulsoFields");
+          var mensalistaFields = document.getElementById("mensalistaFields");
+
+          if (this.value === "avulso") {
+            avulsoFields.style.display = "block";
+            mensalistaFields.style.display = "none";
+          } else if (this.value === "mensalista") {
+            avulsoFields.style.display = "none";
+            mensalistaFields.style.display = "block";
+          }
+        });
+
+      function gerarComprovante() {
+        const tipoCliente = document.getElementById("tipoCliente").value;
+        if (tipoCliente === "avulso") {
+          gerarComprovanteClienteAvulso();
+        } else if (tipoCliente === "mensalista") {
+          gerarComprovanteClienteMensalista();
+        }
+      }
+
+      function abrirModalCaixaDoDia() {
+        var caixaDoDiaModal = new bootstrap.Modal(
+          document.getElementById("caixaDoDiaModal")
+        );
+        caixaDoDiaModal.show();
+      }
+
+      function gerarComprovanteCaixaDoDia() {
+        // Função para gerar comprovante do fechamento de caixa do dia
+        const despesasDia = document.getElementById("despesasDia").value;
+        const lucrosDia = document.getElementById("lucrosDia").value;
+        const totalDia = document.getElementById("totalDia").value;
+
+        const caixaData = {
+          despesas: despesasDia,
+          lucros: lucrosDia,
+          total: totalDia,
+        };
+
+        console.log("Caixa do Dia:", caixaData);
+        // Aqui você pode adicionar a lógica para enviar esses dados para a impressora
+      }
+      //gerar comprovante alvulso
+      function gerarComprovanteClienteAvulso() {
+        const nomeCliente = document.getElementById("clienteAvulso").value;
+        const placaVeiculo = document.getElementById("placaAvulso").value;
+        const veiculo = document.getElementById("veiculoAvulso").value;
+        const entrada = document.getElementById("entradaAvulso").value;
+        const saida = document.getElementById("saidaAvulso").value;
+        const servicoAdicional = document.getElementById("servicoAvulso").value;
+        const valor = document.getElementById("valorAvulso").value;
+        const razao = document.getElementById("razaoAvulso").value;
+        const endereco = document.getElementById("enderecoAvulso").value;
+
+        const comprovanteTxt =
+          `Comprovante de Cliente Avulso\n\n` +
+          `Nome do Cliente: ${nomeCliente}\n` +
+          `Placa do Veículo: ${placaVeiculo}\n` +
+          `Veículo: ${veiculo}\n` +
+          `Horário de Entrada: ${entrada}\n` +
+          `Horário de Saída: ${saida}\n` +
+          `Serviço Adicional: ${servicoAdicional}\n` +
+          `Valor: ${valor}\n` +
+          `Razão Social: ${razao}\n` +
+          `Endereço: ${endereco}\n`;
+
+        // Criação de um blob de texto
+        const blob = new Blob([comprovanteTxt], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        // Criação do link de download
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "comprovante-avulso.txt";
+        link.click();
+
+        // Limpeza do objeto URL
+        URL.revokeObjectURL(url);
+      }
+      function gerarComprovanteClienteMensalista() {
+        const nomeCliente = document.getElementById("clienteMensalista").value;
+        const placaVeiculo = document.getElementById("placaMensalista").value;
+        const veiculo = document.getElementById("veiculoMensalista").value;
+        const vencimento = document.getElementById(
+          "vencimentoMensalista"
+        ).value;
+        const valor = document.getElementById("valorMensalista").value;
+        const razao = document.getElementById("razaoCliente").value;
+        const endereco = document.getElementById("enderecoCliente").value;
+
+        const comprovanteTxt =
+          `Comprovante de Cliente Mensalista\n\n` +
+          `Nome do Cliente: ${nomeCliente}\n` +
+          `Placa do Veículo: ${placaVeiculo}\n` +
+          `Veículo: ${veiculo}\n` +
+          `Data de Vencimento: ${vencimento}\n` +
+          `Valor: ${valor}\n` +
+          `Razão Social: ${razao}\n` +
+          `Endereço: ${endereco}\n`;
+
+        // Criação de um blob de texto
+        const blob = new Blob([comprovanteTxt], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        // Criação do link de download
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "comprovante-mensalista.txt";
+        link.click();
+
+        // Limpeza do objeto URL
+        URL.revokeObjectURL(url);
+      }
+    </script>
+    <script>
+      function gerarComprovanteClienteMensalista() {
+        const nomeCliente = document
+          .getElementById("clienteMensalista")
+          .value.trim();
+        const placaVeiculo = document
+          .getElementById("placaMensalista")
+          .value.trim();
+        const veiculo = document
+          .getElementById("veiculoMensalista")
+          .value.trim();
+        const vencimento = document
+          .getElementById("vencimentoMensalista")
+          .value.trim();
+        const valor = document.getElementById("valorMensalista").value.trim();
+        const razao = document.getElementById("razaoCliente").value.trim();
+        const endereco = document
+          .getElementById("enderecoCliente")
+          .value.trim();
+
+        // Função para formatar a data
+        function obterDataAtual() {
+          const data = new Date();
+          const dia = String(data.getDate()).padStart(2, "0");
+          const mes = String(data.getMonth() + 1).padStart(2, "0"); // Janeiro é 0!
+          const ano = data.getFullYear();
+          return `${dia}/${mes}/${ano}`;
+        }
+
+        const dataAtual = obterDataAtual();
+
+        const comprovanteTxt =
+          `Comprovante de Cliente Mensalista\n\n` +
+          `Data de Emissão: ${dataAtual}\n` + // Adicionando a data atual
+          `Nome do Cliente: ${nomeCliente}\n` +
+          `Placa do Veículo: ${placaVeiculo}\n` +
+          `Veículo: ${veiculo}\n` +
+          `Data de Vencimento: ${vencimento}\n` +
+          `Valor: ${valor}\n` +
+          `Razão Social: ${razao}\n` +
+          `Endereço: ${endereco}\n`;
+
+        // Criação de um blob de texto
+        const blob = new Blob([comprovanteTxt], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        // Criação do link de download
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "comprovante-mensalista.txt";
+        link.click();
+
+        // Limpeza do objeto URL
+        URL.revokeObjectURL(url);
+      }
+    </script>
+    <script>
+      function gerarComprovanteCaixaDoDia() {
+        // Coleta os dados do formulário
+        const data = document.getElementById("caixaDia").value.trim();
+        const despesas = document.getElementById("despesasDia").value.trim();
+        const lucros = document.getElementById("lucrosDia").value.trim();
+        const total = document.getElementById("totalDia").value.trim();
+
+        // Cria o texto do comprovante
+        const comprovanteTxt =
+          `Comprovante de Fechamento de Caixa\n\n` +
+          `Data: ${data}\n` +
+          `Despesas: ${despesas}\n` +
+          `Lucros: ${lucros}\n` +
+          `Total: ${total}\n`;
+
+        // Criação de um blob de texto
+        const blob = new Blob([comprovanteTxt], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        // Criação do link de download
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "comprovante-fechamento-caixa.txt";
+        link.click();
+
+        // Limpeza do objeto URL
+        URL.revokeObjectURL(url);
+      }
+    </script>
+    <script>
+      // Debounce function to limit the rate of function execution
+      function debounce(func, delay) {
+        let timeout;
+        return function (...args) {
+          clearTimeout(timeout);
+          timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+      }
+
+      // Add event listeners with debounce
+      document
+        .getElementById("clienteAvulso")
+        .addEventListener("input", debounce(buscarDadosAvulso, 500));
+
+      document
+        .getElementById("placaAvulso")
+        .addEventListener("input", debounce(buscarDadosAvulso, 500));
+
+      function buscarDadosAvulso() {
+        const cliente = document.getElementById("clienteAvulso").value.trim();
+        const placa = document.getElementById("placaAvulso").value.trim();
+
+        if (cliente || placa) {
+          // Make sure both fields are provided for a valid request
+          if (cliente && placa) {
+            fetch(
+              `https://oneparkestacionamento.pythonanywhere.com/avulso-saida?cliente=${encodeURIComponent(
+                cliente
+              )}&placa=${encodeURIComponent(placa)}`
+            )
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Erro na requisição");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                if (data.length > 0) {
+                  const dados = data[0];
+                  document.getElementById("clienteAvulso").value =
+                    dados.cliente;
+                  document.getElementById("placaAvulso").value = dados.placa;
+                  document.getElementById("veiculoAvulso").value =
+                    dados.veiculo;
+                  document.getElementById("servicoAvulso").value =
+                    dados.servico_adicional;
+                  document.getElementById("valorAvulso").value = dados.valor;
+                  document.getElementById("entradaAvulso").value =
+                    dados.horario_entrada;
+                  document.getElementById("saidaAvulso").value =
+                    dados.horario_saida;
+                } else {
+                  alert(
+                    "Nenhum dado encontrado para o cliente ou placa informado."
+                  );
+                }
+              })
+              .catch((error) => {
+                console.error("Erro:", error);
+              });
+          }
+        }
+      }
+      //letras maisculas
+      document
+        .getElementById("clienteAvulso")
+        .addEventListener("input", function () {
+          this.value = this.value.toUpperCase();
+        });
+
+      document
+        .getElementById("placaAvulso")
+        .addEventListener("input", function () {
+          this.value = this.value.toUpperCase();
+        });
+      document
+        .getElementById("clienteMensalista")
+        .addEventListener("input", function () {
+          this.value = this.value.toUpperCase();
+        });
+
+      document
+        .getElementById("placaMensalista")
+        .addEventListener("input", function () {
+          this.value = this.value.toUpperCase();
+        });
+    </script>
+    <script>
+      document
+        .getElementById("placaMensalista")
+        .addEventListener("input", debounce(fetchClienteMensalistaData));
+
+      function debounce(func, timeout = 500) {
+        let timer;
+        return (...args) => {
+          clearTimeout(timer);
+          timer = setTimeout(() => func.apply(this, args), timeout);
+        };
+      }
+
+      function fetchClienteMensalistaData() {
+        const clienteInput = document
+          .getElementById("clienteMensalista")
+          .value.trim();
+        const placaInput = document
+          .getElementById("placaMensalista")
+          .value.trim();
+
+        if (placaInput.length >= 3) {
+          const url = `https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes-filter?cliente=${encodeURIComponent(
+            clienteInput
+          )}&placa=${encodeURIComponent(placaInput)}`;
+          fetch(url)
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+              }
+              return response.json();
+            })
+            .then((data) => {
+              if (data.length > 0) {
+                preencherCamposMensalista(data[0]);
+              }
+            })
+            .catch((error) =>
+              console.error("Erro ao buscar dados do cliente:", error)
+            );
+        }
+      }
+
+      function preencherCamposMensalista(clienteData) {
+        document.getElementById("clienteMensalista").value =
+          clienteData.cliente.trim();
+        document.getElementById("placaMensalista").value =
+          clienteData.placa.trim();
+        document.getElementById("veiculoMensalista").value =
+          clienteData.veiculo.trim();
+        document.getElementById("vencimentoMensalista").value =
+          clienteData.mensalista.trim();
+        document.getElementById("valorMensalista").value =
+          clienteData.mensalidade.trim();
+        // Preencha os demais campos conforme necessário
+      }
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const inputCaixaDia = document.getElementById("caixaDia");
+        if (inputCaixaDia) {
+          // Formata a data ao carregar a página
+          formatarDataAtual();
+
+          // Adiciona um event listener para formatar a data ao digitar
+          inputCaixaDia.addEventListener("input", function () {
+            clearTimeout(window.formatTimeout);
+            window.formatTimeout = setTimeout(
+              () => formatarDataCampo(this),
+              2000
+            ); // 2000ms (2 segundos) de atraso
+          });
+        }
+      });
+
+      function formatarDataAtual() {
+        const inputCaixaDia = document.getElementById("caixaDia");
+        if (!inputCaixaDia) {
+          console.error("Elemento com id 'caixaDia' não encontrado.");
+          return;
+        }
+
+        const dataAtual = new Date();
+        const dia = String(dataAtual.getDate()).padStart(2, "0");
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, "0"); // Meses são de 0 a 11
+        const ano = dataAtual.getFullYear();
+
+        const dataFormatada = `${dia}/${mes}/${ano}`;
+        inputCaixaDia.value = dataFormatada;
+      }
+
+      function formatarDataCampo(input) {
+        let valor = input.value;
+
+        // Remove caracteres não numéricos
+        valor = valor.replace(/\D/g, "");
+
+        if (valor.length > 8) {
+          valor = valor.slice(0, 8); // Limita a 8 dígitos
+        }
+
+        // Formata a data no formato dd/mm/yyyy
+        let dia = valor.slice(0, 2);
+        let mes = valor.slice(2, 4);
+        let ano = valor.slice(4, 8);
+
+        if (ano.length === 2) {
+          ano = "20" + ano; // Corrige para 4 dígitos
+        }
+
+        if (ano.length === 4 && (ano < 1900 || ano > 2100)) {
+          alert("O ano deve estar entre 1900 e 2100.");
+          return;
+        }
+
+        if (dia) {
+          dia = dia.padStart(2, "0");
+        }
+
+        if (mes) {
+          mes = mes.padStart(2, "0");
+        }
+
+        input.value = `${dia}/${mes}/${ano}`;
+      }
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const inputCaixaDia = document.getElementById("caixaDia");
+
+        if (inputCaixaDia) {
+          // Inicializa a data atual no campo ao carregar a página
+          formatarDataAtual();
+
+          // Adiciona um listener para monitorar alterações no campo de data
+          inputCaixaDia.addEventListener("input", function () {
+            clearTimeout(window.fetchTimeout);
+            window.fetchTimeout = setTimeout(() => {
+              const dataFormatada = formatarDataParaURL(this.value);
+              if (dataFormatada) {
+                buscarDadosCaixa(dataFormatada);
+              }
+            }, 2000); // 2000ms (2 segundos) de atraso
+          });
+        }
+      });
+
+      function formatarDataAtual() {
+        const inputCaixaDia = document.getElementById("caixaDia");
+        if (!inputCaixaDia) return;
+
+        const dataAtual = new Date();
+        const dia = String(dataAtual.getDate()).padStart(2, "0");
+        const mes = String(dataAtual.getMonth() + 1).padStart(2, "0");
+        const ano = dataAtual.getFullYear();
+        inputCaixaDia.value = `${dia}/${mes}/${ano}`;
+      }
+
+      function buscarDadosCaixa(data) {
+        if (!data) return;
+
+        fetch(`https://oneparkestacionamento.pythonanywhere.com/caixa-fechamento/${data}`)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Erro na resposta: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.length > 0) {
+              preencherCampos(data[0]);
+            }
+          })
+          .catch((error) =>
+            console.error("Erro ao buscar dados do caixa:", error)
+          );
+      }
+
+      function formatarDataParaURL(data) {
+        // Remove caracteres não numéricos
+        let valor = data.replace(/\D/g, "");
+
+        if (valor.length < 8) return ""; // Retorna vazio se a data estiver incompleta
+
+        let dia = valor.slice(0, 2);
+        let mes = valor.slice(2, 4);
+        let ano = valor.slice(4, 8);
+
+        if (ano.length === 2) {
+          ano = "20" + ano; // Corrige para 4 dígitos
+        }
+
+        if (ano.length === 4 && (ano < 1900 || ano > 2100)) {
+          alert("O ano deve estar entre 1900 e 2100.");
+          return "";
+        }
+
+        return `${dia}-${mes}-${ano}`;
+      }
+
+      function preencherCampos(dados) {
+        document.getElementById("despesasDia").value = dados.despesas;
+        document.getElementById("lucrosDia").value = dados.lucros;
+        document.getElementById("totalDia").value = dados.total;
+      }
+    </script>
+  </body>
+</html>

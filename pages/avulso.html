@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <style>
+      #cadastro,
+      #cadastro-saida {
+        display: none;
+      }
+      .autocomplete-items {
+        position: absolute;
+        border: 1px solid #ddd;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        bottom: 100%; /* Ajusta para aparecer acima do input */
+        left: 0;
+        right: 0;
+        max-height: 200px; /* Limita a altura da lista de sugestões */
+        overflow-y: auto; /* Adiciona rolagem se necessário */
+      }
+      .autocomplete-items div {
+        padding: 10px;
+        cursor: pointer;
+        background-color: white; /* Garante que o fundo da sugestão é branco */
+      }
+      .autocomplete-items div:hover {
+        background-color: #ddd;
+      }
+    </style>
+    <link rel="stylesheet" href="../style/mobile.css" />
+    <link rel="stylesheet" href="../style/style.css" />
+    <title>Avulso</title>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#" style="color: #495057">One Park</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            aria-label="Toggle navigation"
+          ></button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="../index.html">Página Inicial</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./clientes.html">Cadastrar</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./consultar.html">Registros</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./busca-avancada.html"
+                  >Gerenciamento</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="./comprovante.html">Comprovantes</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main
+      class="d-flex justify-content-center align-items-center"
+      style="height: 80vh"
+    ></main>
+    <div class="d-flex justify-content-center mb-4"></div>
+    <div class="d-flex justify-content-center mb-4">
+      <button id="btn-entrada" class="btn btn-primary mx-2">
+        Avulso Entrada
+      </button>
+      <button id="btn-saida" class="btn btn-secondary mx-2">
+        Avulso Saída
+      </button>
+    </div>
+
+    <div id="cadastro" class="container">
+      <!-- faça um seletor ou botão que eu possa ecolher qual formulario quero preencher o de saida ou de entrada  -->
+      <div class="row">
+        <h1 id="avs">Avulso Entrada</h1>
+        <div class="col-12 col-md-6 input-group">
+          <!-- quero que esse formulario envie para rota http://127.0.0.1:5000/avulso-entrada esse é o formulario de entrada do cliente -->
+          <input
+            type="text"
+            id="cliente-entrada"
+            class="form-control"
+            placeholder="Cliente"
+          />
+          <img src="../img/clientes.png" alt="cliente" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="tel"
+            class="form-control"
+            placeholder="Telefone"
+          />
+          <img src="../img/whatsapp.png" alt="telefone" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="veiculo"
+            class="form-control"
+            placeholder="Veículo"
+          />
+          <img src="../img/protecao.png" alt="veículo" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="placa-entrada"
+            class="form-control"
+            placeholder="Placa"
+          />
+          <img src="../img/placa-de-carro.png" alt="placa" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="horario-entrada"
+            class="form-control"
+            placeholder="Horário de Entrada"
+          />
+          <img src="../img/check-in-quadrangular.png" alt="checkin" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="data-entrada"
+            class="form-control"
+            placeholder="Data de Entrada"
+          />
+          <img src="../img/calendario.png" alt="calendário" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="servico-adicional"
+            class="form-control"
+            placeholder="Serviço Adicional"
+          />
+
+          <img src="../img/carro.png" alt="serviço adicional" />
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+          <button
+            type="submit"
+            id="sub-entrada"
+            class="btn btn-primary btn-custom"
+          >
+            Enviar
+          </button>
+          <!-- ao clicar nesse botão eu quero que envie os dados para a rota http://127.0.0.1:5000/avulso-entrada -->
+        </div>
+      </div>
+    </div>
+
+    <div id="cadastro-saida" class="container">
+      <!-- aqui é o avuso saida esse formulario tem que dar a saida do cliente cadastrado na rota http://127.0.0.1:5000/avulso-entrada
+      então ao salvar esse formulario na rota http://127.0.0.1:5000/avulso-saida ele tem que deletar o id correspondente ao cliente que entrou  -->
+      <div class="row">
+        <h1 id="avs">Avulso Saida</h1>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="cliente-saida"
+            class="form-control"
+            placeholder="Cliente"
+            oninput="fetchClientData(this.value)"
+          />
+          <img src="../img/clientes.png" alt="cliente" />
+          <div class="col-12 col-md-6 input-group">
+            <input
+              type="text"
+              id="placa-saida"
+              class="form-control"
+              placeholder="Placa"
+            />
+            <img src="../img/placa-de-carro.png" alt="placa" />
+          </div>
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="tel-saida"
+            class="form-control"
+            placeholder="Telefone"
+          />
+          <img src="../img/whatsapp.png" alt="telefone" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="veiculo-saida"
+            class="form-control"
+            placeholder="Veículo"
+          />
+          <img src="../img/protecao.png" alt="veículo" />
+        </div>
+
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="horario-entrada-get"
+            class="form-control"
+            placeholder="Horário de Entrada"
+          />
+          <img src="../img/check-in-quadrangular.png" alt="checkin" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="horario-saida"
+            class="form-control"
+            placeholder="Horário de Saida"
+          /><!-- aqui ao começar a digitar o nome ja quero que venha com o horario atual horario de brasilia de quando começou a ser preenchido o formulario -->
+          <img src="../img/check-in-quadrangular.png" alt="checkin" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="data-entrada-get"
+            class="form-control"
+            placeholder="Data de Entrada"
+          />
+          <img src="../img/calendario.png" alt="calendário" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="data-saida"
+            class="form-control"
+            placeholder="Data de Entrada"
+          />
+          <img src="../img/calendario.png" alt="calendário" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="servico-adicional-get"
+            class="form-control"
+            placeholder="Serviço Adicional"
+          />
+          <img src="../img/carro.png" alt="serviço adicional" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="tempo"
+            class="form-control"
+            placeholder="Quantidade De Horas"
+          />
+          <img src="../img/rotacao-no-sentido-horario.png" alt="valor" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
+            id="valor"
+            class="form-control"
+            placeholder="Valor Final"
+          />
+          <!-- aqui esse campo tem um arquivo js a parte para calcular  -->
+          <img src="../img/cifrao.png" alt="valor" />
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+          <button
+            type="submit"
+            id="sub-saida"
+            class="btn btn-primary btn-custom"
+            onclick="submitSaidaForm()"
+          >
+            Enviar
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="successModal"
+      tabindex="-1"
+      aria-labelledby="successModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <!--  quero que esse modal seja exibido ao ser gravado os dados com sucesso  -->
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="successModalLabel">Sucesso</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Cliente avulso salvo com sucesso!</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="bg-light text-center py-3">
+      <div class="container">
+        <p class="mb-0">© 2024 One Park. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../placaUppercase.js"></script>
+    <script src="../script.js"></script>
+    <script src="../tempoValor.js"></script>
+    <script>
+      document
+        .getElementById("btn-entrada")
+        .addEventListener("click", function () {
+          document.getElementById("cadastro").style.display = "block";
+          document.getElementById("cadastro-saida").style.display = "none";
+          document.getElementById("avs").textContent = "Avulso Entrada";
+        });
+
+      document
+        .getElementById("btn-saida")
+        .addEventListener("click", function () {
+          document.getElementById("cadastro").style.display = "none";
+          document.getElementById("cadastro-saida").style.display = "block";
+          document.getElementById("avs").textContent = "Avulso Saída";
+        });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Verifica qual botão foi selecionado anteriormente
+        const selectedButton = localStorage.getItem("selectedButton");
+
+        if (selectedButton === "btn-saida") {
+          document.getElementById("btn-saida").click(); // Simula o clique no botão de saída
+        } else {
+          document.getElementById("btn-entrada").click(); // Simula o clique no botão de entrada
+        }
+      });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let typingTimer;
+        const typingDelay = 500;
+
+        function fetchClientData(clienteNome, placa) {
+          fetch(
+            `https://oneparkestacionamento.pythonanywhere.com/avulso-entrada?cliente=${encodeURIComponent(
+              clienteNome
+            )}&placa=${encodeURIComponent(placa)}`
+          )
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("Dados recebidos:", data);
+
+              if (Array.isArray(data) && data.length > 0) {
+                const clientData = data.find(
+                  (entry) => entry.placa.trim() === placa.trim()
+                );
+
+                if (clientData) {
+                  console.log("Dados do cliente encontrados:", clientData);
+                  document.getElementById("tel-saida").value =
+                    clientData.telefone || "";
+                  document.getElementById("veiculo-saida").value =
+                    clientData.veiculo || "";
+                  document.getElementById("placa-saida").value =
+                    clientData.placa.trim() || "";
+                  document.getElementById("horario-entrada-get").value =
+                    clientData.horario_entrada || "";
+                  document.getElementById("data-entrada-get").value =
+                    clientData.data_entrada || "";
+                  document.getElementById("servico-adicional-get").value =
+                    clientData.servico_adicional || "";
+                } else {
+                  console.warn(
+                    "Nenhum dado correspondente encontrado para a placa."
+                  );
+                }
+              } else {
+                console.warn(
+                  "Nenhum dado retornado ou o formato está incorreto."
+                );
+              }
+            })
+            .catch((error) => {
+              console.error("Erro:", error);
+            });
+        }
+
+        function handleInput() {
+          clearTimeout(typingTimer);
+
+          const placa = document.getElementById("placa-saida");
+          const clienteNome = document.getElementById("cliente-saida");
+
+          // Verifica se os elementos existem e se os valores não são undefined
+          if (placa && clienteNome) {
+            const placaValue = placa.value.trim();
+            const clienteNomeValue = clienteNome.value.trim();
+
+            if (placaValue.length >= 7 && clienteNomeValue) {
+              typingTimer = setTimeout(() => {
+                fetchClientData(clienteNomeValue, placaValue);
+              }, typingDelay);
+            } else {
+              // Limpa os campos se a placa ou o nome do cliente não atenderem aos critérios
+              document.getElementById("tel-saida").value = "";
+              document.getElementById("veiculo-saida").value = "";
+              document.getElementById("horario-entrada-get").value = "";
+              document.getElementById("data-entrada-get").value = "";
+              document.getElementById("servico-adicional-get").value = "";
+            }
+          } else {
+            console.error("Elementos de entrada não encontrados no DOM.");
+          }
+        }
+
+        function initializeModal() {
+          const today = new Date().toISOString().split("T")[0];
+          const dataSaidaInput = document.getElementById("data-saida");
+          if (dataSaidaInput) {
+            dataSaidaInput.value = today;
+          }
+        }
+
+        const placaInput = document.getElementById("placa-saida");
+        const clienteInput = document.getElementById("cliente-saida");
+
+        if (placaInput) {
+          placaInput.addEventListener("input", handleInput);
+        } else {
+          console.error("Elemento com ID 'placa-saida' não encontrado.");
+        }
+
+        if (clienteInput) {
+          clienteInput.addEventListener("input", handleInput);
+        } else {
+          console.error("Elemento com ID 'cliente-saida' não encontrado.");
+        }
+
+        initializeModal();
+      });
+    </script>
+
+    <script>
+      document
+        .getElementById("horario-saida")
+        .addEventListener("focus", function () {
+          const now = new Date();
+          const options = {
+            timeZone: "America/Sao_Paulo",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          };
+          this.value = now.toLocaleTimeString("pt-BR", options);
+        });
+    </script>
+    <!-- <script>
+      async function submitSaidaForm() {
+        const form = document.getElementById("cadastro-saida");
+
+        const cliente = document.getElementById("cliente-saida").value;
+        const placa = document.getElementById("placa-saida").value;
+
+        try {
+          // Salvar a saída avulsa
+          const responseSaida = await fetch(
+            "http://127.0.0.1:5000/avulso-saida",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                cliente: cliente,
+                telefone: document.getElementById("tel-saida").value,
+                veiculo: document.getElementById("veiculo-saida").value,
+                placa: placa,
+                horarioEntrada: document.getElementById("horario-entrada-get")
+                  .value,
+                horarioSaida: document.getElementById("horario-saida").value,
+                dataEntrada: document.getElementById("data-entrada-get").value,
+                servicoAdicional: document.getElementById(
+                  "servico-adicional-get"
+                ).value,
+                valor: document.getElementById("valor").value,
+              }),
+            }
+          );
+          const resultSaida = await responseSaida.json();
+          if (!responseSaida.ok) {
+            throw new Error(resultSaida.error || "Erro ao salvar a saída");
+          }
+
+          // Deletar o registro de entrada
+          const responseEntrada = await fetch(
+            "http://127.0.0.1:5000/avulso-entrada",
+            {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                cliente: cliente,
+                placa: placa,
+              }),
+            }
+          );
+
+          const resultEntrada = await responseEntrada.json();
+          if (!responseEntrada.ok) {
+            throw new Error(resultEntrada.error || "Erro ao deletar a entrada");
+          }
+
+          // Mostrar modal de sucesso
+          const myModal = new bootstrap.Modal(
+            document.getElementById("successModal")
+          );
+          myModal.show();
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    </script> -->
+    <script>
+      async function submitSaidaForm() {
+        const form = document.getElementById("cadastro-saida");
+
+        const cliente = document.getElementById("cliente-saida").value;
+        const placa = document.getElementById("placa-saida").value;
+
+        try {
+          // Salvar a saída avulsa
+          const responseSaida = await fetch(
+            "https://oneparkestacionamento.pythonanywhere.com/avulso-saida",
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                cliente: cliente,
+                telefone: document.getElementById("tel-saida").value,
+                veiculo: document.getElementById("veiculo-saida").value,
+                placa: placa,
+                horarioEntrada: document.getElementById("horario-entrada-get")
+                  .value,
+                horarioSaida: document.getElementById("horario-saida").value,
+                dataEntrada: document.getElementById("data-entrada-get").value,
+                servicoAdicional: document.getElementById(
+                  "servico-adicional-get"
+                ).value,
+                valor: document.getElementById("valor").value,
+              }),
+            }
+          );
+
+          const resultSaida = await responseSaida.json();
+          if (!responseSaida.ok) {
+            throw new Error(resultSaida.error || "Erro ao salvar a saída");
+          }
+
+          // Deletar o registro de entrada
+          const responseEntrada = await fetch(
+            `https://oneparkestacionamento.pythonanywhere.com/avulso-entrada?cliente=${encodeURIComponent(
+              cliente
+            )}&placa=${encodeURIComponent(placa)}`,
+            {
+              method: "DELETE",
+            }
+          );
+
+          const resultEntrada = await responseEntrada.json();
+          if (!responseEntrada.ok) {
+            throw new Error(resultEntrada.error || "Erro ao deletar a entrada");
+          }
+
+          // Mostrar modal de sucesso
+          const myModal = new bootstrap.Modal(
+            document.getElementById("successModal")
+          );
+          myModal.show();
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      }
+    </script>
+    <script>
+      document
+        .getElementById("sub-entrada")
+        .addEventListener("click", function (event) {
+          event.preventDefault(); // Impede o envio padrão do formulário
+
+          const cliente = document.getElementById("cliente-entrada").value;
+          const telefone = document.getElementById("tel").value;
+          const veiculo = document.getElementById("veiculo").value;
+          const placa = document.getElementById("placa-entrada").value;
+          const horarioEntrada =
+            document.getElementById("horario-entrada").value;
+          const dataEntrada = document.getElementById("data-entrada").value;
+          const servicoAdicional =
+            document.getElementById("servico-adicional").value;
+
+          fetch("https://oneparkestacionamento.pythonanywhere.com/avulso-entrada", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              cliente,
+              telefone,
+              veiculo,
+              placa,
+              horarioEntrada,
+              dataEntrada,
+              servicoAdicional,
+            }),
+          })
+            .then((response) => response.json())
+            .then(() => {
+              const myModal = new bootstrap.Modal(
+                document.getElementById("successModal")
+              );
+              myModal.show();
+            })
+            .catch((error) => console.error("Error:", error));
+        });
+    </script>
+    <script>
+      // Função para converter o texto para maiúsculas
+      function toUpperCaseInput(event) {
+        event.target.value = event.target.value.toUpperCase();
+      }
+
+      // Função para obter a hora atual de Brasília
+      function getCurrentTimeInBrasilia() {
+        const now = new Date();
+        const options = {
+          timeZone: "America/Sao_Paulo",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        };
+        return now.toLocaleTimeString("pt-BR", options);
+      }
+
+      // Função para obter a data atual de Brasília
+      function getCurrentDateInBrasilia() {
+        const now = new Date();
+        const options = {
+          timeZone: "America/Sao_Paulo",
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+        };
+        return now.toLocaleDateString("pt-BR", options);
+      }
+
+      // Função para lidar com o input e preencher os campos
+      function handleInput(event) {
+        toUpperCaseInput(event); // Converte o texto para maiúsculas
+
+        if (event.target.id === "cliente-entrada") {
+          document.getElementById("horario-entrada").value =
+            getCurrentTimeInBrasilia(); // Atualiza o horário de entrada
+          document.getElementById("data-entrada").value =
+            getCurrentDateInBrasilia(); // Atualiza a data de entrada
+        } else if (event.target.id === "cliente-saida") {
+          document.getElementById("data-saida").value =
+            getCurrentDateInBrasilia(); // Atualiza a data de saída
+        }
+      }
+
+      // Adiciona eventos de input para os campos específicos
+      document
+        .getElementById("cliente-entrada")
+        .addEventListener("input", handleInput);
+      document
+        .getElementById("cliente-saida")
+        .addEventListener("input", handleInput);
+    </script>
+    <script>
+      // Função para carregar o JSON e iniciar o autocomplete
+      async function loadJSON() {
+        const response = await fetch("../servicos.json");
+        const data = await response.json();
+        return data.servicos;
+      }
+
+      // Função para inicializar o autocomplete
+      function autocomplete(inputElement) {
+        loadJSON().then((servicos) => {
+          const autocompleteContainer = document.createElement("div");
+          autocompleteContainer.setAttribute("class", "autocomplete-items");
+          inputElement.parentNode.appendChild(autocompleteContainer);
+
+          inputElement.addEventListener("input", function () {
+            const value = this.value.toUpperCase();
+            autocompleteContainer.innerHTML = ""; // Limpa sugestões anteriores
+
+            if (!value) return;
+
+            const filteredServicos = servicos.filter((servico) =>
+              servico.nome.toUpperCase().includes(value)
+            );
+
+            filteredServicos.forEach((servico) => {
+              const item = document.createElement("div");
+              item.textContent = servico.nome;
+              item.addEventListener("click", function () {
+                inputElement.value = servico.nome;
+                autocompleteContainer.innerHTML = "";
+              });
+              autocompleteContainer.appendChild(item);
+            });
+          });
+
+          document.addEventListener("click", function (e) {
+            if (!inputElement.contains(e.target)) {
+              autocompleteContainer.innerHTML = "";
+            }
+          });
+        });
+      }
+
+      // Inicializa o autocomplete para os campos desejados
+      document.addEventListener("DOMContentLoaded", function () {
+        const servicoAdicionalGet = document.getElementById(
+          "servico-adicional-get"
+        );
+        const servicoAdicional = document.getElementById("servico-adicional");
+
+        autocomplete(servicoAdicionalGet);
+        autocomplete(servicoAdicional);
+      });
+    </script>
+  </body>
+</html>

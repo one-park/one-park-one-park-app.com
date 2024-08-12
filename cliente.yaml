@@ -1,0 +1,5 @@
+clientes_mensalistas:
+  - nome: "Carlos Souza"
+    placa: "DEF2345"
+    veiculo: "Forte"
+    mensalidade: "R$ 200,00"

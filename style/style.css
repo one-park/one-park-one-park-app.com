@@ -1,0 +1,116 @@
+:root {
+  font-family: "Roboto", sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
+}
+
+main {
+  flex: 1;
+}
+
+footer {
+  background-color: #f8f9fa; /* Cor de fundo do footer */
+  width: 100%;
+}
+
+@media (min-width: 1200px) {
+  ul.dropdown-menu.show {
+    margin: 9px -118px;
+  }
+  .custom-img {
+    width: 50%; /* Ajuste a largura conforme necessário */
+  }
+}
+
+.dropdown-toggle::after {
+  display: none;
+}
+
+.navbar-toggler {
+  background-image: url("../img/ico-menu.png");
+  background-size: contain; /* Ajusta a imagem para caber no botão */
+  background-repeat: no-repeat; /* Evita que a imagem se repita */
+  background-position: center; /* Centraliza a imagem no botão */
+  width: 40px;
+  height: 40px;
+  border: none;
+}
+
+a.navbar-brand {
+  font-weight: 800;
+  letter-spacing: 1;
+}
+
+a.nav-link {
+  font-weight: 700;
+}
+
+.input-group {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+.input-group {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Espaçamento entre input e imagem */
+  width: 100%; /* Faz o container ocupar a largura total */
+}
+.input-group img {
+  max-width: 24px; /* Ajuste o tamanho dos ícones conforme necessário */
+  height: auto; /* Mantém a proporção da imagem */
+}
+.input-group input {
+  flex: 1;
+  width: 100%; /* Faz o campo de input ocupar toda a largura disponível */
+  box-sizing: border-box; /* Inclui padding e borda na largura total */
+}
+#cadastro,
+#cadastro-saida {
+  padding: 1rem;
+}
+
+@media (min-width: 1200px) {
+  #cadastro,
+  #consultar,
+  #clientes,
+  #cadastro-saida {
+    width: 60%;
+  }
+  button {
+    width: 40%;
+  }
+  .btn-custom {
+    width: 60%;
+    padding: 0.5rem 2rem; /* Ajuste o padding conforme necessário */
+  }
+}
+
+#cds-cli,
+#avs,
+#cts {
+  color: #495057;
+}
+
+@media (min-width: 1200px) {
+  #btn-entrada,
+  #btn-saida {
+    margin: -15px 0px;
+    margin-bottom: -10px;
+    width: 300px;
+    height: 40px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .list-group {
+    width: 500px;
+    height: 300px;
+  }
+}
