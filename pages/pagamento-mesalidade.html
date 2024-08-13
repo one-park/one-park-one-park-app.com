@@ -72,6 +72,11 @@
         color: white;
         border: none;
       }
+      @media (max-width: 767.98px) {
+        #btn-atl {
+          margin: 145px 0px;
+        }
+      }
     </style>
 
     <title>Consultar</title>
@@ -207,41 +212,42 @@
             });
         }
 
-        fetchData("https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes").then(
-          (clientes) => {
-            const resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = "";
+        fetchData(
+          "https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes"
+        ).then((clientes) => {
+          const resultsDiv = document.getElementById("results");
+          resultsDiv.innerHTML = "";
 
-            function filterData(data) {
-              return data.filter((item) => {
-                return (
-                  (cliente === "" || item.cliente.includes(cliente)) &&
-                  (tel === "" || item.telefone.includes(tel)) &&
-                  (placa === "" || item.placa.includes(placa))
-                );
-              });
+          function filterData(data) {
+            return data.filter((item) => {
+              return (
+                (cliente === "" || item.cliente.includes(cliente)) &&
+                (tel === "" || item.telefone.includes(tel)) &&
+                (placa === "" || item.placa.includes(placa))
+              );
+            });
+          }
+
+          function createList(title, items) {
+            const section = document.createElement("section");
+            const h2 = document.createElement("h3");
+            h2.textContent = title;
+            section.appendChild(h2);
+
+            if (items.length === 0) {
+              section.innerHTML += "<p>Nenhum resultado encontrado.</p>";
+              return section;
             }
 
-            function createList(title, items) {
-              const section = document.createElement("section");
-              const h2 = document.createElement("h3");
-              h2.textContent = title;
-              section.appendChild(h2);
-
-              if (items.length === 0) {
-                section.innerHTML += "<p>Nenhum resultado encontrado.</p>";
-                return section;
+            const list = document.createElement("ul");
+            items.forEach((item) => {
+              // Verifica se a mensalidade está paga e atualiza o campo mensalista
+              if (item.mensalidade_pago) {
+                item.mensalista = item.proxima_mensalidade_data;
               }
 
-              const list = document.createElement("ul");
-              items.forEach((item) => {
-                // Verifica se a mensalidade está paga e atualiza o campo mensalista
-                if (item.mensalidade_pago) {
-                  item.mensalista = item.proxima_mensalidade_data;
-                }
-
-                const li = document.createElement("li");
-                li.innerHTML = `
+              const li = document.createElement("li");
+              li.innerHTML = `
                                 <p><span class="data-field">Cliente:</span> ${
                                   item.cliente || "Não disponível"
                                 }</p>
@@ -268,18 +274,17 @@
                                 }, ${!item.mensalidade_pago})">Atualizar Pagamento</button>
                             `;
 
-                list.appendChild(li);
-              });
+              list.appendChild(li);
+            });
 
-              section.appendChild(list);
-              return section;
-            }
-
-            const filteredClientes = filterData(clientes);
-
-            resultsDiv.appendChild(createList("Clientes", filteredClientes));
+            section.appendChild(list);
+            return section;
           }
-        );
+
+          const filteredClientes = filterData(clientes);
+
+          resultsDiv.appendChild(createList("Clientes", filteredClientes));
+        });
       }
 
       function updatePaymentStatus(id, status) {
@@ -297,17 +302,20 @@
           -2
         )}/${nextPaymentDate.getFullYear()}`;
 
-        fetch(`https://oneparkestacionamento.pythonanywhere.com/atualizar-status-pagamento/${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            mensalidade_pago: status ? 1 : 0,
-            proxima_mensalidade_data: formattedDate,
-            mensalista: formattedDate, // Atualiza o campo mensalista também
-          }),
-        })
+        fetch(
+          `https://oneparkestacionamento.pythonanywhere.com/atualizar-status-pagamento/${id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              mensalidade_pago: status ? 1 : 0,
+              proxima_mensalidade_data: formattedDate,
+              mensalista: formattedDate, // Atualiza o campo mensalista também
+            }),
+          }
+        )
           .then((response) => response.json())
           .then((data) => {
             console.log(data.message);

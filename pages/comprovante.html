@@ -739,11 +739,11 @@
       // Add event listeners with debounce
       document
         .getElementById("clienteAvulso")
-        .addEventListener("input", debounce(buscarDadosAvulso, 500));
+        .addEventListener("input", debounce(buscarDadosAvulso, 11000));
 
       document
         .getElementById("placaAvulso")
-        .addEventListener("input", debounce(buscarDadosAvulso, 500));
+        .addEventListener("input", debounce(buscarDadosAvulso, 11000));
 
       function buscarDadosAvulso() {
         const cliente = document.getElementById("clienteAvulso").value.trim();
