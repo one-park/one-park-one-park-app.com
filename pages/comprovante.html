@@ -190,6 +190,18 @@
               <!-- Dados para Clientes Avulsos -->
               <div id="avulsoFields">
                 <div class="mb-3">
+                  <label for="comprovante" class="form-label"
+                    >Numero de Registro</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="comprovanteAvulso"
+                    name="comprovanteAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
                   <label for="clienteAvulso" class="form-label"
                     >Nome do Cliente</label
                   >
@@ -290,7 +302,7 @@
                     class="form-control"
                     id="enderecoAvulso"
                     name="enderecoAvulso"
-                      value="R. Urutuba, 118 São Paulo - SP, 04053-020"
+                    value="R. Urutuba, 118 São Paulo - SP, 04053-020"
                     required
                   />
                 </div>
@@ -736,60 +748,48 @@
         };
       }
 
-      // Add event listeners with debounce
+      // Add event listener with debounce
       document
-        .getElementById("clienteAvulso")
-        .addEventListener("input", debounce(buscarDadosAvulso, 11000));
-
-      document
-        .getElementById("placaAvulso")
-        .addEventListener("input", debounce(buscarDadosAvulso, 11000));
+        .getElementById("comprovanteAvulso")
+        .addEventListener("input", debounce(buscarDadosAvulso, 500));
 
       function buscarDadosAvulso() {
-        const cliente = document.getElementById("clienteAvulso").value.trim();
-        const placa = document.getElementById("placaAvulso").value.trim();
+        const comprovante = document
+          .getElementById("comprovanteAvulso")
+          .value.trim();
 
-        if (cliente || placa) {
-          // Make sure both fields are provided for a valid request
-          if (cliente && placa) {
-            fetch(
-              `https://oneparkestacionamento.pythonanywhere.com/avulso-saida?cliente=${encodeURIComponent(
-                cliente
-              )}&placa=${encodeURIComponent(placa)}`
-            )
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Erro na requisição");
-                }
-                return response.json();
-              })
-              .then((data) => {
-                if (data.length > 0) {
-                  const dados = data[0];
-                  document.getElementById("clienteAvulso").value =
-                    dados.cliente;
-                  document.getElementById("placaAvulso").value = dados.placa;
-                  document.getElementById("veiculoAvulso").value =
-                    dados.veiculo;
-                  document.getElementById("servicoAvulso").value =
-                    dados.servico_adicional;
-                  document.getElementById("valorAvulso").value = dados.valor;
-                  document.getElementById("entradaAvulso").value =
-                    dados.horario_entrada;
-                  document.getElementById("saidaAvulso").value =
-                    dados.horario_saida;
-                } else {
-                  alert(
-                    "Nenhum dado encontrado para o cliente ou placa informado."
-                  );
-                }
-              })
-              .catch((error) => {
-                console.error("Erro:", error);
-              });
-          }
+        if (comprovante) {
+          fetch(
+            `https://oneparkestacionamento.pythonanywhere.com/avulso-saida?comprovante=${encodeURIComponent(
+              comprovante
+            )}`
+          )
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Erro na requisição");
+              }
+              return response.json();
+            })
+            .then((dados) => {
+              if (dados) {
+                document.getElementById("clienteAvulso").value = dados.cliente;
+                document.getElementById("placaAvulso").value = dados.placa;
+                document.getElementById("veiculoAvulso").value = dados.veiculo;
+                document.getElementById("servicoAvulso").value =
+                  dados.servico_adicional;
+                document.getElementById("valorAvulso").value = dados.valor;
+                document.getElementById("entradaAvulso").value =
+                  dados.horario_entrada;
+                document.getElementById("saidaAvulso").value =
+                  dados.horario_saida;
+              }
+            })
+            .catch((error) => {
+              console.error("Erro:", error);
+            });
         }
       }
+
       //letras maisculas
       document
         .getElementById("clienteAvulso")
@@ -975,7 +975,9 @@
       function buscarDadosCaixa(data) {
         if (!data) return;
 
-        fetch(`https://oneparkestacionamento.pythonanywhere.com/caixa-fechamento/${data}`)
+        fetch(
+          `https://oneparkestacionamento.pythonanywhere.com/caixa-fechamento/${data}`
+        )
           .then((response) => {
             if (!response.ok) {
               throw new Error(`Erro na resposta: ${response.statusText}`);

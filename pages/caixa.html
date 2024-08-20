@@ -720,12 +720,17 @@
               if (
                 item.descricao.includes("Mensalidade") ||
                 item.descricao.includes("Saída avulso") ||
-                item.descricao.includes("Lavagem")
+                item.descricao.includes("Lavagem") ||
+                item.descricao.includes("LAVAGEM") ||
+                item.descricao.includes("CAXINHA") 
+
               ) {
                 lucro += valor;
               } else if (
                 item.descricao.includes("GASTOS") ||
-                item.descricao.includes("DESPESAS")
+                item.descricao.includes("DESPESAS") ||
+                item.descricao.includes("PRODUTOS") ||
+                item.descricao.includes("MANUTENÇÃO")
               ) {
                 despesa += valor;
               }

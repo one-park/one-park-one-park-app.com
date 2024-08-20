@@ -100,6 +100,19 @@
         <div class="col-12 col-md-6 input-group">
           <input
             type="text"
+            id="comprovante"
+            class="form-control"
+            placeholder="Numero Comprovante"
+          />
+          <img
+            src="../img/comprovante.png"
+            alt="id"
+            onclick="salvarERedirecionar()"
+          />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
             id="cliente-entrada"
             class="form-control"
             placeholder="Cliente"
@@ -179,115 +192,125 @@
         <div class="col-12 col-md-6 input-group">
           <input
             type="text"
+            id="comprovante-saida"
+            class="form-control"
+            placeholder="Numero Comprovante"
+          />
+          <img src="../img/comprovante.png" alt="id" />
+        </div>
+        <div class="col-12 col-md-6 input-group">
+          <input
+            type="text"
             id="cliente-saida"
             class="form-control"
             placeholder="Cliente"
             oninput="fetchClientData(this.value)"
           />
           <img src="../img/clientes.png" alt="cliente" />
-          <div class="col-12 col-md-6 input-group">
-            <input
-              type="text"
-              id="placa-saida"
-              class="form-control"
-              placeholder="Placa"
-            />
-            <img src="../img/placa-de-carro.png" alt="placa" />
-          </div>
         </div>
         <div class="col-12 col-md-6 input-group">
           <input
             type="text"
-            id="tel-saida"
+            id="placa-saida"
             class="form-control"
-            placeholder="Telefone"
+            placeholder="Placa"
           />
-          <img src="../img/whatsapp.png" alt="telefone" />
+          <img src="../img/placa-de-carro.png" alt="placa" />
         </div>
-        <div class="col-12 col-md-6 input-group">
-          <input
-            type="text"
-            id="veiculo-saida"
-            class="form-control"
-            placeholder="Veículo"
-          />
-          <img src="../img/protecao.png" alt="veículo" />
-        </div>
+      </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="tel-saida"
+          class="form-control"
+          placeholder="Telefone"
+        />
+        <img src="../img/whatsapp.png" alt="telefone" />
+      </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="veiculo-saida"
+          class="form-control"
+          placeholder="Veículo"
+        />
+        <img src="../img/protecao.png" alt="veículo" />
+      </div>
 
-        <div class="col-12 col-md-6 input-group">
-          <input
-            type="text"
-            id="horario-entrada-get"
-            class="form-control"
-            placeholder="Horário de Entrada"
-          />
-          <img src="../img/check-in-quadrangular.png" alt="checkin" />
-        </div>
-        <div class="col-12 col-md-6 input-group">
-          <input
-            type="text"
-            id="horario-saida"
-            class="form-control"
-            placeholder="Horário de Saida"
-          /><!-- aqui ao começar a digitar o nome ja quero que venha com o horario atual horario de brasilia de quando começou a ser preenchido o formulario -->
-          <img src="../img/check-in-quadrangular.png" alt="checkin" />
-        </div>
-        <div class="col-12 col-md-6 input-group">
-          <input
-            type="text"
-            id="data-entrada-get"
-            class="form-control"
-            placeholder="Data de Entrada"
-          />
-          <img src="../img/calendario.png" alt="calendário" />
-        </div>
-        <div class="col-12 col-md-6 input-group">
-          <input
-            type="text"
-            id="data-saida"
-            class="form-control"
-            placeholder="Data de Entrada"
-          />
-          <img src="../img/calendario.png" alt="calendário" />
-        </div>
-        <div class="col-12 col-md-6 input-group">
-          <input
-            type="text"
-            id="servico-adicional-get"
-            class="form-control"
-            placeholder="Serviço Adicional"
-          />
-          <img src="../img/carro.png" alt="serviço adicional" />
-        </div>
-        <div class="col-12 col-md-6 input-group">
-          <input
-            type="text"
-            id="tempo"
-            class="form-control"
-            placeholder="Quantidade De Horas"
-          />
-          <img src="../img/rotacao-no-sentido-horario.png" alt="valor" />
-        </div>
-        <div class="col-12 col-md-6 input-group">
-          <input
-            type="text"
-            id="valor"
-            class="form-control"
-            placeholder="Valor Final"
-          />
-          <!-- aqui esse campo tem um arquivo js a parte para calcular  -->
-          <img src="../img/cifrao.png" alt="valor" />
-        </div>
-        <div class="col-12 d-flex justify-content-center">
-          <button
-            type="submit"
-            id="sub-saida"
-            class="btn btn-primary btn-custom"
-            onclick="submitSaidaForm()"
-          >
-            Enviar
-          </button>
-        </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="horario-entrada-get"
+          class="form-control"
+          placeholder="Horário de Entrada"
+        />
+        <img src="../img/check-in-quadrangular.png" alt="checkin" />
+      </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="horario-saida-get"
+          class="form-control"
+          placeholder="Horário de Saida"
+        /><!-- aqui ao começar a digitar o nome ja quero que venha com o horario atual horario de brasilia de quando começou a ser preenchido o formulario -->
+        <img src="../img/check-in-quadrangular.png" alt="checkin" />
+      </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="data-entrada-get"
+          class="form-control"
+          placeholder="Data de Entrada"
+        />
+        <img src="../img/calendario.png" alt="calendário" />
+      </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="data-saida"
+          class="form-control"
+          placeholder="Data de Saida"
+          required
+        />
+        <img src="../img/calendario.png" alt="calendário" />
+      </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="servico-adicional-get"
+          class="form-control"
+          placeholder="Serviço Adicional"
+        />
+        <img src="../img/carro.png" alt="serviço adicional" />
+      </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="tempo"
+          class="form-control"
+          placeholder="Quantidade De Horas"
+        />
+        <img src="../img/rotacao-no-sentido-horario.png" alt="valor" />
+      </div>
+      <div class="col-12 col-md-6 input-group">
+        <input
+          type="text"
+          id="valor"
+          class="form-control"
+          placeholder="Valor Final"
+        />
+        <!-- aqui esse campo tem um arquivo js a parte para calcular  -->
+        <img src="../img/cifrao.png" alt="valor" />
+      </div>
+      <div class="col-12 d-flex justify-content-center">
+        <button
+          type="submit"
+          id="sub-saida"
+          class="btn btn-primary btn-custom"
+          onclick="submitSaidaForm()"
+        >
+          Enviar
+        </button>
       </div>
     </div>
     <!-- Modal -->
@@ -323,6 +346,50 @@
         </div>
       </div>
     </div>
+    <!-- Modal de Confirmação -->
+    <div
+      class="modal fade"
+      id="clienteFrequenteModal"
+      tabindex="-1"
+      aria-labelledby="clienteFrequenteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="clienteFrequenteModalLabel">
+              Cliente Frequente Encontrado
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Deseja carregar os dados do cliente frequente?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Não
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="confirmarClienteFrequente"
+            >
+              Sim
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <footer class="bg-light text-center py-3">
       <div class="container">
         <p class="mb-0">© 2024 One Park. Todos os direitos reservados.</p>
@@ -371,11 +438,11 @@
         let typingTimer;
         const typingDelay = 500;
 
-        function fetchClientData(clienteNome, placa) {
+        function fetchComprovanteData(comprovante) {
           fetch(
-            `https://oneparkestacionamento.pythonanywhere.com/avulso-entrada?cliente=${encodeURIComponent(
-              clienteNome
-            )}&placa=${encodeURIComponent(placa)}`
+            `https://oneparkestacionamento.pythonanywhere.com/avulso-entrada?comprovante=${encodeURIComponent(
+              comprovante
+            )}`
           )
             .then((response) => {
               if (!response.ok) {
@@ -386,34 +453,26 @@
             .then((data) => {
               console.log("Dados recebidos:", data);
 
-              if (Array.isArray(data) && data.length > 0) {
-                const clientData = data.find(
-                  (entry) => entry.placa.trim() === placa.trim()
-                );
-
-                if (clientData) {
-                  console.log("Dados do cliente encontrados:", clientData);
-                  document.getElementById("tel-saida").value =
-                    clientData.telefone || "";
-                  document.getElementById("veiculo-saida").value =
-                    clientData.veiculo || "";
-                  document.getElementById("placa-saida").value =
-                    clientData.placa.trim() || "";
-                  document.getElementById("horario-entrada-get").value =
-                    clientData.horario_entrada || "";
-                  document.getElementById("data-entrada-get").value =
-                    clientData.data_entrada || "";
-                  document.getElementById("servico-adicional-get").value =
-                    clientData.servico_adicional || "";
-                } else {
-                  console.warn(
-                    "Nenhum dado correspondente encontrado para a placa."
-                  );
-                }
+              if (data && !data.error) {
+                document.getElementById("cliente-saida").value =
+                  data.cliente || "";
+                document.getElementById("tel-saida").value =
+                  data.telefone || "";
+                document.getElementById("veiculo-saida").value =
+                  data.veiculo || "";
+                document.getElementById("placa-saida").value =
+                  data.placa.trim() || "";
+                document.getElementById("horario-entrada-get").value =
+                  data.horario_entrada || "";
+                document.getElementById("data-entrada-get").value =
+                  data.data_entrada || "";
+                document.getElementById("servico-adicional-get").value =
+                  data.servico_adicional || "";
+                // Preenche o campo de horário de saída com a hora atual
+                document.getElementById("horario-saida-get").value =
+                  new Date().toLocaleTimeString();
               } else {
-                console.warn(
-                  "Nenhum dado retornado ou o formato está incorreto."
-                );
+                console.warn("Nenhum dado correspondente encontrado.");
               }
             })
             .catch((error) => {
@@ -424,61 +483,54 @@
         function handleInput() {
           clearTimeout(typingTimer);
 
-          const placa = document.getElementById("placa-saida");
-          const clienteNome = document.getElementById("cliente-saida");
+          const comprovanteInput = document.getElementById("comprovante-saida");
 
-          // Verifica se os elementos existem e se os valores não são undefined
-          if (placa && clienteNome) {
-            const placaValue = placa.value.trim();
-            const clienteNomeValue = clienteNome.value.trim();
+          if (comprovanteInput) {
+            const comprovanteValue = comprovanteInput.value.trim();
 
-            if (placaValue.length >= 7 && clienteNomeValue) {
+            if (comprovanteValue.length > 0) {
               typingTimer = setTimeout(() => {
-                fetchClientData(clienteNomeValue, placaValue);
+                fetchComprovanteData(comprovanteValue);
+                // Adiciona a data atual formatada no campo de data-saida
+                const today = new Date();
+                const formattedDate =
+                  ("0" + today.getDate()).slice(-2) +
+                  "/" +
+                  ("0" + (today.getMonth() + 1)).slice(-2) +
+                  "/" +
+                  today.getFullYear();
+                document.getElementById("data-saida").value = formattedDate;
               }, typingDelay);
             } else {
-              // Limpa os campos se a placa ou o nome do cliente não atenderem aos critérios
+              // Limpa os campos se o comprovante não atender aos critérios
+              document.getElementById("cliente-saida").value = "";
               document.getElementById("tel-saida").value = "";
               document.getElementById("veiculo-saida").value = "";
+              document.getElementById("placa-saida").value = "";
               document.getElementById("horario-entrada-get").value = "";
               document.getElementById("data-entrada-get").value = "";
               document.getElementById("servico-adicional-get").value = "";
+              document.getElementById("horario-saida-get").value = "";
+              document.getElementById("data-saida").value = ""; // Limpa o campo data-saida
             }
           } else {
-            console.error("Elementos de entrada não encontrados no DOM.");
+            console.error("Elemento de entrada não encontrado no DOM.");
           }
         }
 
-        function initializeModal() {
-          const today = new Date().toISOString().split("T")[0];
-          const dataSaidaInput = document.getElementById("data-saida");
-          if (dataSaidaInput) {
-            dataSaidaInput.value = today;
-          }
-        }
+        const comprovanteInput = document.getElementById("comprovante-saida");
 
-        const placaInput = document.getElementById("placa-saida");
-        const clienteInput = document.getElementById("cliente-saida");
-
-        if (placaInput) {
-          placaInput.addEventListener("input", handleInput);
+        if (comprovanteInput) {
+          comprovanteInput.addEventListener("input", handleInput);
         } else {
-          console.error("Elemento com ID 'placa-saida' não encontrado.");
+          console.error("Elemento com ID 'comprovante-saida' não encontrado.");
         }
-
-        if (clienteInput) {
-          clienteInput.addEventListener("input", handleInput);
-        } else {
-          console.error("Elemento com ID 'cliente-saida' não encontrado.");
-        }
-
-        initializeModal();
       });
     </script>
 
     <script>
       document
-        .getElementById("horario-saida")
+        .getElementById("horario-saida-get")
         .addEventListener("focus", function () {
           const now = new Date();
           const options = {
@@ -490,80 +542,24 @@
           this.value = now.toLocaleTimeString("pt-BR", options);
         });
     </script>
-    !--
     <script>
       async function submitSaidaForm() {
-        const form = document.getElementById("cadastro-saida");
+        const comprovante = document.getElementById("comprovante-saida").value;
 
-        const cliente = document.getElementById("cliente-saida").value;
-        const placa = document.getElementById("placa-saida").value;
-
-        try {
-          // Salvar a saída avulsa
-          const responseSaida = await fetch(
-            "https://oneparkestacionamento.pythonanywhere.com/avulso-saida",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                cliente: cliente,
-                telefone: document.getElementById("tel-saida").value,
-                veiculo: document.getElementById("veiculo-saida").value,
-                placa: placa,
-                horarioEntrada: document.getElementById("horario-entrada-get")
-                  .value,
-                horarioSaida: document.getElementById("horario-saida").value,
-                dataEntrada: document.getElementById("data-entrada-get").value,
-                servicoAdicional: document.getElementById(
-                  "servico-adicional-get"
-                ).value,
-                valor: document.getElementById("valor").value,
-              }),
-            }
-          );
-          const resultSaida = await responseSaida.json();
-          if (!responseSaida.ok) {
-            throw new Error(resultSaida.error || "Erro ao salvar a saída");
-          }
-
-          // Deletar o registro de entrada
-          const responseEntrada = await fetch(
-            "https://oneparkestacionamento.pythonanywhere.com//avulso-entrada",
-            {
-              method: "DELETE",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                cliente: cliente,
-                placa: placa,
-              }),
-            }
-          );
-
-          const resultEntrada = await responseEntrada.json();
-          if (!responseEntrada.ok) {
-            throw new Error(resultEntrada.error || "Erro ao deletar a entrada");
-          }
-
-          // Mostrar modal de sucesso
-          const myModal = new bootstrap.Modal(
-            document.getElementById("successModal")
-          );
-          myModal.show();
-        } catch (error) {
-          console.error("Error:", error);
+        if (!comprovante) {
+          console.error("O campo comprovante é obrigatório.");
+          return;
         }
-      }
-    </script>
-    <script>
-      async function submitSaidaForm() {
+
         const cliente = document.getElementById("cliente-saida").value;
         const placa = document.getElementById("placa-saida").value;
+        const valor = document.getElementById("valor").value;
 
         // Dados a serem enviados para a rota /caixa
         const caixaData = {
           data: new Date().toISOString().split("T")[0], // Data no formato YYYY-MM-DD
           descricao: "Saída avulso",
-          valor: document.getElementById("valor").value,
+          valor: valor,
         };
 
         try {
@@ -588,18 +584,20 @@
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
+                comprovante: comprovante,
                 cliente: cliente,
                 telefone: document.getElementById("tel-saida").value,
                 veiculo: document.getElementById("veiculo-saida").value,
                 placa: placa,
                 horarioEntrada: document.getElementById("horario-entrada-get")
                   .value,
-                horarioSaida: document.getElementById("horario-saida").value,
+                horarioSaida:
+                  document.getElementById("horario-saida-get").value,
                 dataEntrada: document.getElementById("data-entrada-get").value,
                 servicoAdicional: document.getElementById(
                   "servico-adicional-get"
                 ).value,
-                valor: document.getElementById("valor").value,
+                valor: valor,
               }),
             }
           );
@@ -607,6 +605,21 @@
           const resultSaida = await responseSaida.json();
           if (!responseSaida.ok) {
             throw new Error(resultSaida.error || "Erro ao salvar a saída");
+          }
+
+          // Deletar o registro de entrada
+          const responseEntrada = await fetch(
+            `https://oneparkestacionamento.pythonanywhere.com/avulso-entrada?comprovante=${encodeURIComponent(
+              comprovante
+            )}`,
+            {
+              method: "DELETE",
+            }
+          );
+
+          const resultEntrada = await responseEntrada.json();
+          if (!responseEntrada.ok) {
+            throw new Error(resultEntrada.error || "Erro ao deletar a entrada");
           }
 
           // Mostrar modal de sucesso
@@ -620,6 +633,7 @@
         }
       }
     </script>
+
     <script>
       document
         .getElementById("sub-entrada")
@@ -769,6 +783,44 @@
         autocomplete(servicoAdicionalGet);
         autocomplete(servicoAdicional);
       });
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Fazer uma chamada à rota /proximo-comprovante para obter o próximo número de comprovante
+        fetch(
+          "https://oneparkestacionamento.pythonanywhere.com/proximo-comprovante"
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.comprovante) {
+              // Preencher o campo "Número Comprovante" com o valor recebido
+              document.getElementById("comprovante").value = data.comprovante;
+            } else {
+              console.error("Erro: Nenhum comprovante recebido.");
+            }
+          })
+          .catch((error) =>
+            console.error("Erro ao buscar o comprovante:", error)
+          );
+      });
+    </script>
+    <script>
+      document
+        .querySelector('img[alt="id"]')
+        .addEventListener("click", function () {
+          // Lê o número do comprovante do campo na página atual
+          const comprovante = document.getElementById("comprovante").value;
+
+          if (comprovante) {
+            // Codifica o número do comprovante para inseri-lo na URL
+            const encodedComprovante = encodeURIComponent(comprovante);
+
+            // Navega para a página comprovante-entrada.html com o comprovante na URL
+            window.location.href = `comprovante-entrada.html?comprovanteAvulso=${encodedComprovante}`;
+          } else {
+            alert("Número de comprovante não encontrado!");
+          }
+        });
     </script>
   </body>
 </html>

@@ -252,31 +252,33 @@
 
               const li = document.createElement("li");
               li.innerHTML = `
-                                <p><span class="data-field">Cliente:</span> ${
-                                  item.cliente || "Não disponível"
-                                }</p>
-                                <p><span class="data-field">Telefone:</span> ${
-                                  item.telefone || "Não disponível"
-                                }</p>
-                                <p><span class="data-field">Veículo:</span> ${
-                                  item.veiculo || "Não disponível"
-                                }</p>
-                                <p><span class="data-field">Placa:</span> ${
-                                  item.placa || "Não disponível"
-                                }</p>
-                                <p><span class="data-field">Mensalista:</span> ${
-                                  item.mensalista || "Não disponível"
-                                }</p>
-                                <p><span class="data-field">Mensalidade:</span> ${
-                                  item.mensalidade || "Não disponível"
-                                }</p>
-                                <p><span class="data-field">Mensalidade Pago:</span> ${
-                                  item.mensalidade_pago ? "Sim" : "Não"
-                                }</p>
-                                <button id="btn-atl" onclick="updatePaymentStatus(${
-                                  item.id
-                                }, ${!item.mensalidade_pago})">Atualizar Pagamento</button>
-                            `;
+                          <p><span class="data-field">Cliente:</span> ${
+                            item.cliente || "Não disponível"
+                          }</p>
+                          <p><span class="data-field">Telefone:</span> ${
+                            item.telefone || "Não disponível"
+                          }</p>
+                          <p><span class="data-field">Veículo:</span> ${
+                            item.veiculo || "Não disponível"
+                          }</p>
+                          <p><span class="data-field">Placa:</span> ${
+                            item.placa || "Não disponível"
+                          }</p>
+                          <p><span class="data-field">Mensalista:</span> ${
+                            item.mensalista || "Não disponível"
+                          }</p>
+                          <p><span class="data-field">Mensalidade:</span> ${
+                            item.mensalidade || "Não disponível"
+                          }</p>
+                          <p><span class="data-field">Mensalidade Pago:</span> ${
+                            item.mensalidade_pago ? "Sim" : "Não"
+                          }</p>
+                          <button id="btn-atl" onclick="updatePaymentStatus(${
+                            item.id
+                          }, ${!item.mensalidade_pago}, '${
+                item.proxima_mensalidade_data
+              }')">Atualizar Pagamento</button>
+                      `;
 
               list.appendChild(li);
             });
@@ -291,13 +293,13 @@
         });
       }
 
-      function updatePaymentStatus(id, status) {
-        const today = new Date();
-        let nextPaymentDate = new Date(today);
+      function updatePaymentStatus(id, status, proximaMensalidadeAtual) {
+        let nextPaymentDate = new Date(
+          proximaMensalidadeAtual.split("/").reverse().join("-")
+        );
 
         if (status) {
-          nextPaymentDate.setMonth(today.getMonth() + 1);
-          nextPaymentDate.setDate(today.getDate() + 1); // Ajusta para o dia correto
+          nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
         }
 
         const formattedDate = `${("0" + nextPaymentDate.getDate()).slice(

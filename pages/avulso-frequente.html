@@ -210,8 +210,6 @@
 
         Promise.all([
           fetchData("https://oneparkestacionamento.pythonanywhere.com/avulso-saida-all"),
-          fetchData("https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes"),
-          fetchData("https://oneparkestacionamento.pythonanywhere.com/avulso-entrada-all"),
         ]).then(([saida, clientes, entrada]) => {
           const resultsDiv = document.getElementById("results");
           resultsDiv.innerHTML = "";
@@ -245,7 +243,7 @@
 
               // Formatação dos dados
               li.innerHTML = `
-              <p><span class="data-field">Comprovante:</span> ${
+              <p><span class="data-field">Cliente:</span> ${
               item.comprovante || "Não disponível"
             }</p>
             <p><span class="data-field">Cliente:</span> ${
@@ -294,8 +292,6 @@
           }
 
           const filteredSaida = filterDataByNameAndPlate(saida);
-          const filteredClientes = filterDataByNameAndPlate(clientes);
-          const filteredEntrada = filterDataByNameAndPlate(entrada);
 
           resultsDiv.appendChild(createList("Saída", filteredSaida));
           resultsDiv.appendChild(createList("Clientes", filteredClientes));

@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../style/mobile.css" />
+    <link rel="stylesheet" href="../style/style.css" />
+    <style>
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f8f9fa; /* Cor de fundo */
+        z-index: 1; /* Nível de sobreposição */
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      body {
+        padding-bottom: 60px; /* Espaço extra para evitar que o conteúdo fique escondido atrás do footer */
+      }
+      @media (min-width: 1200px) {
+        /* Container para centralizar os botões horizontalmente */
+        .button-container {
+          display: flex;
+          justify-content: center; /* Centraliza horizontalmente */
+          margin-top: 20px; /* Ajusta a distância do topo da página */
+        }
+
+        /* Garantir que os botões tenham um espaçamento entre eles */
+        .button-container button {
+          margin: 0 10px; /* Espaçamento horizontal entre os botões */
+        }
+      }
+      #modal-cli {
+        width: 300px;
+      }
+      #modal-caixa {
+        width: 300px;
+      }
+      @media (max-width: 700px) {
+        .button-container {
+          display: grid;
+          justify-content: center;
+          margin-top: 20px; /* Ajusta a distância do topo da página */
+        }
+        #modal-cli {
+          width: 100%;
+        }
+        #modal-caixa {
+          width: 100%;
+        }
+        .text-center {
+          button {
+            width: 80%;
+          }
+        }
+        .modal-footer.d-flex.justify-content-center.w-100 {
+          button {
+            width: 80%;
+          }
+        }
+      }
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #f8f9fa; /* Cor de fundo */
+        z-index: 0; /* Nível de sobreposição */
+        text-align: center;
+        padding: 10px 0;
+      }
+      .modal-content {
+        z-index: 1;
+      }
+      body {
+        padding-bottom: 60px;
+      }
+    </style>
+
+    <title>Comprovantes</title>
+  </head>
+  <body>
+    <div
+      class="modal fade"
+      id="comprovanteModal"
+      tabindex="-1"
+      aria-labelledby="comprovanteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="comprovanteModalLabel">
+              Gerar Comprovante
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="comprovanteForm">
+              <div class="mb-3">
+                <label for="tipoCliente" class="form-label"
+                  >Tipo de Cliente</label
+                >
+                <select
+                  class="form-select"
+                  id="tipoCliente"
+                  name="tipoCliente"
+                  required
+                >
+                  <option value="avulso">Cliente Avulso</option>
+                </select>
+              </div>
+
+              <!-- Dados para Clientes Avulsos -->
+              <div id="avulsoFields">
+                <div class="mb-3">
+                  <label for="comprovante" class="form-label"
+                    >Numero de Registro</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="comprovanteAvulso"
+                    name="comprovanteAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="clienteAvulso" class="form-label"
+                    >Nome do Cliente</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="clienteAvulso"
+                    name="clienteAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="placaAvulso" class="form-label"
+                    >Placa do Veículo</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="placaAvulso"
+                    name="placaAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="veiculoAvulso" class="form-label">Veículo</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="veiculoAvulso"
+                    name="veiculoAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="entradaAvulso" class="form-label"
+                    >Horário de Entrada</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="entradaAvulso"
+                    name="entradaAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="saidaAvulso" class="form-label"
+                    >Horário de Saída</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="saidaAvulso"
+                    name="saidaAvulso"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="servicoAvulso" class="form-label"
+                    >Serviço Adicional</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="servicoAvulso"
+                    name="servicoAvulso"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="valorAvulso" class="form-label">Valor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="valorAvulso"
+                    name="valorAvulso"
+                    required
+                  />
+                  <div class="mb-3">
+                    <label for="razaoAvulso" class="form-label"
+                      >Razão Social</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="razaoAvulso"
+                      name="razaoAvulso"
+                      value="One Park"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="enderecoAvulso" class="form-label"
+                    >Endereço</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="enderecoAvulso"
+                    name="enderecoAvulso"
+                    value="R. Urutuba, 118 São Paulo - SP, 04053-020"
+                    required
+                  />
+                </div>
+
+                <div class="text-center">
+                  <button
+                    type="button"
+                    class="btn btn-primary mx-2"
+                    id="avulsoComprovante"
+                    onclick="gerarComprovanteClienteAvulso()"
+                  >
+                    Gerar Comprovante
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary mx-2"
+                    data-bs-dismiss="modal"
+                  >
+                    Fechar
+                  </button>
+                </div>
+              </div>
+
+              <!-- Dados para Clientes Mensalistas -->
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="bg-light text-center py-3">
+      <div class="container">
+        <p class="mb-0">© 2024 One Park. Todos os direitos reservados.</p>
+      </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="../script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script>
+      //gerar comprovante alvulso
+      function gerarComprovanteClienteAvulso() {
+        const nomeCliente = document.getElementById("clienteAvulso").value;
+        const placaVeiculo = document.getElementById("placaAvulso").value;
+        const veiculo = document.getElementById("veiculoAvulso").value;
+        const entrada = document.getElementById("entradaAvulso").value;
+        const saida = document.getElementById("saidaAvulso").value;
+        const servicoAdicional = document.getElementById("servicoAvulso").value;
+        const valor = document.getElementById("valorAvulso").value;
+        const razao = document.getElementById("razaoAvulso").value;
+        const endereco = document.getElementById("enderecoAvulso").value;
+
+        const comprovanteTxt =
+          `Comprovante de Cliente Avulso\n\n` +
+          `Nome do Cliente: ${nomeCliente}\n` +
+          `Placa do Veículo: ${placaVeiculo}\n` +
+          `Veículo: ${veiculo}\n` +
+          `Horário de Entrada: ${entrada}\n` +
+          `Horário de Saída: ${saida}\n` +
+          `Serviço Adicional: ${servicoAdicional}\n` +
+          `Valor: ${valor}\n` +
+          `Razão Social: ${razao}\n` +
+          `Endereço: ${endereco}\n`;
+
+        // Criação de um blob de texto
+        const blob = new Blob([comprovanteTxt], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        // Criação do link de download
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "comprovante-avulso.txt";
+        link.click();
+
+        // Limpeza do objeto URL
+        URL.revokeObjectURL(url);
+      }
+    </script>
+    <script>
+      // Função para exibir o modal
+      function mostrarModal() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("comprovanteModal")
+        );
+        modal.show();
+      }
+
+      // Torna o modal disponível ao carregar a página
+      window.onload = function () {
+        const modal = new bootstrap.Modal(
+          document.getElementById("comprovanteModal")
+        );
+        modal.show();
+      };
+
+      // Evento de clique para o botão avulsoComprovante
+      document
+        .getElementById("avulsoComprovante")
+        .addEventListener("click", function () {
+          mostrarModal();
+
+          // Aguarda um tempo para que a função seja executada antes de redirecionar
+          setTimeout(function () {
+            window.location.href = "avulso.html";
+          }, 2000); // Tempo de espera em milissegundos (ajuste conforme necessário)
+        });
+
+      // Função para buscar dados do comprovante
+      function buscarDadosComprovante() {
+        const comprovante = document.getElementById("comprovanteAvulso").value;
+
+        if (comprovante.trim() === "") {
+          return; // Não faz nada se o campo estiver vazio
+        }
+
+        fetch(
+          `https://oneparkestacionamento.pythonanywhere.com/avulso-entrada?comprovante=${encodeURIComponent(
+            comprovante
+          )}`
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.error) {
+              alert(data.error); // Exibe um erro se houver
+              return;
+            }
+
+            // Preenche os campos do formulário com os dados retornados
+            document.getElementById("clienteAvulso").value = data.cliente || "";
+            document.getElementById("placaAvulso").value = data.placa || "";
+            document.getElementById("veiculoAvulso").value = data.veiculo || "";
+            document.getElementById("entradaAvulso").value =
+              data.data_entrada + " " + data.horario_entrada || "";
+            document.getElementById("saidaAvulso").value = ""; // Assumindo que não há dado de saída fornecido
+            document.getElementById("servicoAvulso").value =
+              data.servico_adicional || "";
+            document.getElementById("valorAvulso").value = ""; // Assumindo que não há dado de valor fornecido
+            document.getElementById("razaoAvulso").value = "One Park"; // Valor fixo
+            document.getElementById("enderecoAvulso").value =
+              "R. Urutuba, 118 São Paulo - SP, 04053-020"; // Valor fixo
+          })
+          .catch((error) => {
+            console.error("Erro ao buscar dados do comprovante:", error);
+            alert("Erro ao buscar dados do comprovante.");
+          });
+      }
+
+      // Adiciona o evento de input para buscar dados ao digitar o comprovante
+      document
+        .getElementById("comprovanteAvulso")
+        .addEventListener("input", buscarDadosComprovante);
+
+      // Mostrar o modal ao carregar a página
+      window.onload = mostrarModal;
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+  // Obtém a referência ao modal
+  const comprovanteModal = document.getElementById("comprovanteModal");
+
+  // Adiciona um event listener para quando o modal é mostrado
+  comprovanteModal.addEventListener("shown.bs.modal", function () {
+    preencherComprovante(); // Chama a função para preencher o campo após o modal abrir
+  });
+
+  function preencherComprovante() {
+    // Obtém o número do comprovante da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const comprovante = urlParams.get("comprovanteAvulso");
+
+    if (comprovante) {
+      // Preenche o campo de entrada com o número do comprovante
+      document.getElementById("comprovanteAvulso").value = decodeURIComponent(comprovante);
+    }
+  }
+});
+
+    </script>
+  </body>
+</html>

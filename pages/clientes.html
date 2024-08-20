@@ -155,6 +155,39 @@
         </div>
       </div>
     </div>
+    <div
+      class="modal fade"
+      id="nomeObrigatorioModal"
+      tabindex="-1"
+      aria-labelledby="nomeObrigatorioModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="nomeObrigatorioModalLabel">Aviso</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Por favor, preencha o campo "Nome do Cliente" antes de salvar.
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Fechar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer class="bg-light text-center py-3">
       <div class="container">
@@ -176,38 +209,52 @@
         // Adiciona o evento de input para os inputs de cliente e placa
         clienteInput.addEventListener("input", convertToUpperCase);
         placaInput.addEventListener("input", convertToUpperCase);
-      });
 
-      document
-        .querySelector('button[type="submit"]')
-        .addEventListener("click", function () {
-          const data = {
-            cliente: document.getElementById("cliente").value,
-            telefone: document.getElementById("tel").value,
-            veiculo: document.getElementById("veiculo").value,
-            placa: document.getElementById("placa").value,
-            mensalista: document.getElementById("mensalista").value,
-            mensalidade: document.getElementById("mensalidade").value,
-          };
-
-          fetch("https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              document.getElementById("responseMessage").textContent =
-                data.message;
-              const responseModal = new bootstrap.Modal(
-                document.getElementById("responseModal")
+        // Adiciona o evento de clique ao botão de submit
+        document
+          .querySelector('button[type="submit"]')
+          .addEventListener("click", function (event) {
+            // Verifica se o campo 'cliente' está preenchido
+            if (clienteInput.value.trim() === "") {
+              const nomeObrigatorioModal = new bootstrap.Modal(
+                document.getElementById("nomeObrigatorioModal")
               );
-              responseModal.show();
-            })
-            .catch((error) => console.error("Erro:", error));
-        });
+              nomeObrigatorioModal.show();
+              event.preventDefault(); // Impede o envio do formulário
+              return;
+            }
+
+            const data = {
+              cliente: clienteInput.value,
+              telefone: document.getElementById("tel").value,
+              veiculo: document.getElementById("veiculo").value,
+              placa: placaInput.value,
+              mensalista: document.getElementById("mensalista").value,
+              mensalidade: document.getElementById("mensalidade").value,
+            };
+
+            fetch(
+              "https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+              }
+            )
+              .then((response) => response.json())
+              .then((data) => {
+                document.getElementById("responseMessage").textContent =
+                  data.message;
+                const responseModal = new bootstrap.Modal(
+                  document.getElementById("responseModal")
+                );
+                responseModal.show();
+              })
+              .catch((error) => console.error("Erro:", error));
+          });
+      });
     </script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
