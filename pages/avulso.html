@@ -196,7 +196,12 @@
             class="form-control"
             placeholder="Numero Comprovante"
           />
-          <img src="../img/comprovante.png" alt="id" />
+          <img
+            src="../img/comprovante.png"
+            id="cpv-saida"
+            alt="id"
+            onclick="handleClick()"
+          />
         </div>
         <div class="col-12 col-md-6 input-group">
           <input
@@ -578,6 +583,7 @@
           }
 
           // Salvar a saída avulsa
+
           const responseSaida = await fetch(
             "https://oneparkestacionamento.pythonanywhere.com/avulso-saida",
             {
@@ -649,6 +655,7 @@
           const dataEntrada = document.getElementById("data-entrada").value;
           const servicoAdicional =
             document.getElementById("servico-adicional").value;
+          const comprovante = document.getElementById("comprovante").value; // Lê o campo "comprovante"
 
           fetch(
             "https://oneparkestacionamento.pythonanywhere.com/avulso-entrada",
@@ -663,6 +670,7 @@
                 horarioEntrada,
                 dataEntrada,
                 servicoAdicional,
+                comprovante, // Adiciona o comprovante ao corpo da requisição
               }),
             }
           )
@@ -676,6 +684,7 @@
             .catch((error) => console.error("Error:", error));
         });
     </script>
+
     <script>
       // Função para converter o texto para maiúsculas
       function toUpperCaseInput(event) {
@@ -821,6 +830,24 @@
             alert("Número de comprovante não encontrado!");
           }
         });
+    </script>
+    <script>
+      function handleClick() {
+        // Obter o valor do input
+        const comprovanteValue =
+          document.getElementById("comprovante-saida").value;
+
+        // Verificar se o valor não está vazio
+        if (comprovanteValue) {
+          // Armazenar o valor no localStorage
+          localStorage.setItem("comprovante", comprovanteValue);
+
+          // Navegar para a página comprovante.html
+          window.location.href = "comprovante.html";
+        } else {
+          alert("Por favor, insira um número de comprovante.");
+        }
+      }
     </script>
   </body>
 </html>

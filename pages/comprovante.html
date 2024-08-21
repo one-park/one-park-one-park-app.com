@@ -1022,5 +1022,23 @@
         document.getElementById("totalDia").value = dados.total;
       }
     </script>
+    <script>
+      // Função para preencher o campo com o valor do localStorage
+      function preencherComprovante() {
+        // Obter o valor do localStorage
+        const comprovanteValue = localStorage.getItem("comprovante");
+
+        // Verificar se o valor existe e preencher o campo
+        if (comprovanteValue) {
+          document.getElementById("comprovanteAvulso").value = comprovanteValue;
+
+          // Limpar o valor do localStorage após o preenchimento, se desejado
+          // localStorage.removeItem('comprovante');
+        }
+      }
+
+      // Chamar a função quando a página for carregada
+      window.onload = preencherComprovante;
+    </script>
   </body>
 </html>

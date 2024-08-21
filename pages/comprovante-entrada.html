@@ -191,7 +191,7 @@
                     required
                   />
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                   <label for="saidaAvulso" class="form-label"
                     >Horário de Saída</label
                   >
@@ -202,7 +202,7 @@
                     name="saidaAvulso"
                     required
                   />
-                </div>
+                </div> -->
                 <div class="mb-3">
                   <label for="servicoAvulso" class="form-label"
                     >Serviço Adicional</label
@@ -404,26 +404,26 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-  // Obtém a referência ao modal
-  const comprovanteModal = document.getElementById("comprovanteModal");
+        // Obtém a referência ao modal
+        const comprovanteModal = document.getElementById("comprovanteModal");
 
-  // Adiciona um event listener para quando o modal é mostrado
-  comprovanteModal.addEventListener("shown.bs.modal", function () {
-    preencherComprovante(); // Chama a função para preencher o campo após o modal abrir
-  });
+        // Adiciona um event listener para quando o modal é mostrado
+        comprovanteModal.addEventListener("shown.bs.modal", function () {
+          preencherComprovante(); // Chama a função para preencher o campo após o modal abrir
+        });
 
-  function preencherComprovante() {
-    // Obtém o número do comprovante da URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const comprovante = urlParams.get("comprovanteAvulso");
+        function preencherComprovante() {
+          // Obtém o número do comprovante da URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const comprovante = urlParams.get("comprovanteAvulso");
 
-    if (comprovante) {
-      // Preenche o campo de entrada com o número do comprovante
-      document.getElementById("comprovanteAvulso").value = decodeURIComponent(comprovante);
-    }
-  }
-});
-
+          if (comprovante) {
+            // Preenche o campo de entrada com o número do comprovante
+            document.getElementById("comprovanteAvulso").value =
+              decodeURIComponent(comprovante);
+          }
+        }
+      });
     </script>
   </body>
 </html>
