@@ -171,6 +171,40 @@
         </div>
       </div>
     </main>
+    <!-- Modal para Mensagem de Atualização -->
+    <div
+      class="modal fade"
+      id="mensalidadeModal"
+      tabindex="-1"
+      aria-labelledby="mensalidadeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mensalidadeModalLabel">
+              Atualização de Mensalidade
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Mensalidade atualizada com sucesso!</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="redirectToCaixaPage()"
+            >
+              Ir para Caixa
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <footer class="bg-light text-center py-3">
       <div class="container">
@@ -290,7 +324,6 @@
           resultsDiv.appendChild(createList("Clientes", filteredClientes));
         });
       }
-
       function updatePaymentStatus(id, status, proximaMensalidadeAtual) {
         // Verifica o valor recebido para proximaMensalidadeAtual
         console.log("Data atual recebida:", proximaMensalidadeAtual);
@@ -398,10 +431,20 @@
           })
           .then((data) => {
             console.log("Requisição ao caixa realizada com sucesso:", data);
+            // Exibir o modal após a requisição bem-sucedida
+            var mensalidadeModal = new bootstrap.Modal(
+              document.getElementById("mensalidadeModal")
+            );
+            mensalidadeModal.show();
           })
           .catch((error) => {
             console.error("Erro ao enviar requisição ao caixa:", error.message);
           });
+      }
+
+      // Função para redirecionar para a página caixa.html
+      function redirectToCaixaPage() {
+        window.location.href = "/pages/caixa.html";
       }
     </script>
   </body>
