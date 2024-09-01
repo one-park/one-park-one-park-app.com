@@ -63,7 +63,7 @@
         width: 140px;
         height: 30px;
         font-size: 13px;
-        margin: 145px 430px;
+        margin: 122px 430px;
         position: absolute;
         top: 10px;
         right: 10px;
@@ -74,7 +74,7 @@
       }
       @media (max-width: 767.98px) {
         #btn-atl {
-          margin: 145px 45px;
+          margin: 119px 34px;
           width: 100px;
           height: 30px;
           font-size: 10px;
@@ -217,7 +217,7 @@
         }
 
         fetchData(
-          "https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes"
+          "https://oneparkestacionamento.pythonanywhere.com/clientes"
         ).then((clientes) => {
           const resultsDiv = document.getElementById("results");
           resultsDiv.innerHTML = "";
@@ -270,9 +270,7 @@
                           <p><span class="data-field">Mensalidade:</span> ${
                             item.mensalidade || "Não disponível"
                           }</p>
-                          <p><span class="data-field">Mensalidade Pago:</span> ${
-                            item.mensalidade_pago ? "Sim" : "Não"
-                          }</p>
+                          
                           <button id="btn-atl" onclick="updatePaymentStatus(${
                             item.id
                           }, ${!item.mensalidade_pago}, '${
@@ -294,20 +292,35 @@
       }
 
       function updatePaymentStatus(id, status, proximaMensalidadeAtual) {
-        let nextPaymentDate = new Date(
-          proximaMensalidadeAtual.split("/").reverse().join("-")
-        );
+        // Verifica o valor recebido para proximaMensalidadeAtual
+        console.log("Data atual recebida:", proximaMensalidadeAtual);
 
-        if (status) {
-          nextPaymentDate.setMonth(nextPaymentDate.getMonth() + 1);
-        }
+        // Converte a data recebida para um formato aceito pelo JavaScript
+        let [day, month, year] = proximaMensalidadeAtual.split("/");
+        year = `20${year}`; // Ajusta o ano para o formato de quatro dígitos
+        let nextPaymentDate = new Date(`${year}-${month}-${day}`);
 
+        // Verifica se a conversão da data foi bem-sucedida
+        console.log("Data convertida:", nextPaymentDate.toISOString());
+
+        // Calcula 29 dias após a data fornecida
+        nextPaymentDate.setDate(nextPaymentDate.getDate() + 29);
+
+        // Formata a data para o formato dd/mm/yy
         const formattedDate = `${("0" + nextPaymentDate.getDate()).slice(
           -2
         )}/${("0" + (nextPaymentDate.getMonth() + 1)).slice(
           -2
-        )}/${nextPaymentDate.getFullYear()}`;
+        )}/${nextPaymentDate.getFullYear().toString().slice(-2)}`;
 
+        // Log dos dados que serão enviados
+        console.log("Dados a serem enviados para atualizar status:", {
+          mensalidade_pago: status ? 1 : 0,
+          proxima_mensalidade_data: formattedDate,
+          mensalista: formattedDate,
+        });
+
+        // Envia a requisição PUT para atualizar o status de pagamento e a próxima mensalidade
         fetch(
           `https://oneparkestacionamento.pythonanywhere.com/atualizar-status-pagamento/${id}`,
           {
@@ -318,17 +331,76 @@
             body: JSON.stringify({
               mensalidade_pago: status ? 1 : 0,
               proxima_mensalidade_data: formattedDate,
-              mensalista: formattedDate, // Atualiza o campo mensalista também
+              mensalista: formattedDate,
             }),
           }
         )
-          .then((response) => response.json())
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((data) => {
+                throw new Error(data.error);
+              });
+            }
+            return response.json();
+          })
           .then((data) => {
             console.log(data.message);
-            searchClient(); // Atualiza a lista após alterar o status de pagamento
+            // Após o sucesso da atualização, enviar a requisição POST para o caixa
+            sendPostToCaixa(id, "MENSALIDADE", 200.0); // Ajuste os parâmetros conforme necessário
           })
           .catch((error) => {
-            console.error("Erro:", error);
+            console.error(
+              "Erro ao atualizar status de pagamento:",
+              error.message
+            );
+          });
+      }
+
+      function sendPostToCaixa(id, descricao, valor) {
+        // Obtém a data atual
+        const today = new Date();
+
+        // Formata a data para 'dd/mm/yyyy'
+        const formattedDate = `${("0" + today.getDate()).slice(-2)}/${(
+          "0" +
+          (today.getMonth() + 1)
+        ).slice(-2)}/${today.getFullYear()}`;
+
+        // Log da data formatada para depuração
+        console.log("Data formatada para envio ao caixa:", formattedDate);
+
+        // Cria o objeto com os dados a serem enviados
+        const data = {
+          data: formattedDate,
+          descricao: descricao,
+          id: id,
+          valor: valor,
+        };
+
+        // Log dos dados que serão enviados para depuração
+        console.log("Dados a serem enviados para o caixa:", data);
+
+        // Envia a requisição POST para o endpoint do caixa
+        fetch("https://oneparkestacionamento.pythonanywhere.com/caixa", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              return response.json().then((data) => {
+                throw new Error(data.error);
+              });
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Requisição ao caixa realizada com sucesso:", data);
+          })
+          .catch((error) => {
+            console.error("Erro ao enviar requisição ao caixa:", error.message);
           });
       }
     </script>

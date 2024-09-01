@@ -62,6 +62,7 @@
         <div class="row">
           <h1 id="cds-cli">Editar Cadastro</h1>
           <div class="col-12 col-md-6 input-group mb-3">
+            <input type="hidden" id="clienteId" />
             <input
               type="text"
               id="cliente"
@@ -192,6 +193,7 @@
                 clienteData.mensalista || "";
               document.getElementById("mensalidade").value =
                 clienteData.mensalidade || "";
+              document.getElementById("clienteId").value = clienteData.id || ""; // Salva o ID do cliente
             } else {
               // Limpar campos se nenhum cliente for encontrado
               document.getElementById("tel").value = "";
@@ -199,6 +201,7 @@
               document.getElementById("placa").value = "";
               document.getElementById("mensalista").value = "";
               document.getElementById("mensalidade").value = "";
+              document.getElementById("clienteId").value = ""; // Limpa o ID
             }
           })
           .catch((error) => console.error("Erro:", error));
@@ -218,23 +221,51 @@
           fetchClientData(cliente, placa);
         }
       });
+      // Função para formatar a data para o formato dd/mm/yy
+      function formatDateToDDMMYY(dateString) {
+        try {
+          const date = new Date(dateString);
+          const day = String(date.getDate()).padStart(2, "0");
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const year = String(date.getFullYear()).slice(-2);
+          return `${day}/${month}/${year}`;
+        } catch (error) {
+          console.error("Erro ao formatar a data:", error);
+          return dateString; // Retorna o valor original se a formatação falhar
+        }
+      }
+
+      // Função para formatar a data no formato dd/mm/yy
+      function formatDateToDDMMYY(dateString) {
+        const [year, month, day] = dateString.split("-");
+        return `${day}/${month}/${year.substring(2)}`;
+      }
 
       document
         .querySelector('button[type="submit"]')
         .addEventListener("click", function () {
-          const cliente = document.getElementById("cliente").value.trim();
+          const clienteId = document.getElementById("clienteId").value;
+          if (!clienteId) {
+            console.error("ID do cliente não encontrado.");
+            return;
+          }
+
+          // Obtemos o valor da data e formatamos para dd/mm/yy
+          const mensalistaValue = document.getElementById("mensalista").value;
+          const formattedMensalista = formatDateToDDMMYY(mensalistaValue);
+
           const data = {
-            cliente: cliente,
+            cliente: document.getElementById("cliente").value.trim(),
             telefone: document.getElementById("tel").value,
             veiculo: document.getElementById("veiculo").value,
             placa: document.getElementById("placa").value,
-            mensalista: document.getElementById("mensalista").value,
+            mensalista: formattedMensalista,
             mensalidade: document.getElementById("mensalidade").value,
           };
 
           fetch(
-            `https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes/${encodeURIComponent(
-              cliente
+            `https://oneparkestacionamento.pythonanywhere.com/clientes/${encodeURIComponent(
+              clienteId
             )}`,
             {
               method: "PUT",
@@ -246,29 +277,33 @@
           )
             .then((response) => response.json())
             .then((data) => {
-              document.getElementById("responseMessage").textContent =
-                data.message;
-              const responseModal = new bootstrap.Modal(
-                document.getElementById("responseModal")
-              );
-              responseModal.show();
+              if (data.message) {
+                document.getElementById("responseMessage").textContent =
+                  data.message;
+                const responseModal = new bootstrap.Modal(
+                  document.getElementById("responseModal")
+                );
+                responseModal.show();
+              } else if (data.error) {
+                document.getElementById("responseMessage").textContent =
+                  data.error;
+                const responseModal = new bootstrap.Modal(
+                  document.getElementById("responseModal")
+                );
+                responseModal.show();
+              }
             })
             .catch((error) => console.error("Erro:", error));
         });
     </script>
     <script>
-      document
-        .getElementById("cliente")
-        .addEventListener("input", function () {
-          this.value = this.value.toUpperCase();
-        });
+      document.getElementById("cliente").addEventListener("input", function () {
+        this.value = this.value.toUpperCase();
+      });
 
-      document
-        .getElementById("placa")
-        .addEventListener("input", function () {
-          this.value = this.value.toUpperCase();
-        });
-
+      document.getElementById("placa").addEventListener("input", function () {
+        this.value = this.value.toUpperCase();
+      });
     </script>
   </body>
 </html>

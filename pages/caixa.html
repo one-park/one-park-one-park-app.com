@@ -718,12 +718,11 @@
 
               // Identifica lucro ou despesa com base na descrição
               if (
-                item.descricao.includes("Mensalidade") ||
+                item.descricao.includes("MENSALIDADE") ||
                 item.descricao.includes("Saída avulso") ||
                 item.descricao.includes("Lavagem") ||
                 item.descricao.includes("LAVAGEM") ||
-                item.descricao.includes("CAXINHA") 
-
+                item.descricao.includes("CAXINHA")
               ) {
                 lucro += valor;
               } else if (

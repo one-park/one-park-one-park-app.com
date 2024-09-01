@@ -209,9 +209,15 @@
         }
 
         Promise.all([
-          fetchData("https://oneparkestacionamento.pythonanywhere.com/avulso-saida-all"),
-          fetchData("https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes"),
-          fetchData("https://oneparkestacionamento.pythonanywhere.com/avulso-entrada-all"),
+          fetchData(
+            "https://oneparkestacionamento.pythonanywhere.com/avulso-saida-all"
+          ),
+          fetchData(
+            "https://oneparkestacionamento.pythonanywhere.com/clientes"
+          ),
+          fetchData(
+            "https://oneparkestacionamento.pythonanywhere.com/avulso-entrada-all"
+          ),
         ]).then(([saida, clientes, entrada]) => {
           const resultsDiv = document.getElementById("results");
           resultsDiv.innerHTML = "";
@@ -246,8 +252,8 @@
               // Formatação dos dados
               li.innerHTML = `
               <p><span class="data-field">Comprovante:</span> ${
-              item.comprovante || "Não disponível"
-            }</p>
+                item.comprovante || "Não disponível"
+              }</p>
             <p><span class="data-field">Cliente:</span> ${
               item.cliente || "Não disponível"
             }</p>

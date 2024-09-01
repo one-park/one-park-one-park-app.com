@@ -134,9 +134,7 @@
               <!-- Dados para Clientes Avulsos -->
               <div id="avulsoFields">
                 <div class="mb-3">
-                  <label for="comprovante" class="form-label"
-                    >Numero de Registro</label
-                  >
+                  <label class="form-label">Numero de Registro</label>
                   <input
                     type="text"
                     class="form-control"
@@ -191,18 +189,7 @@
                     required
                   />
                 </div>
-                <!-- <div class="mb-3">
-                  <label for="saidaAvulso" class="form-label"
-                    >Horário de Saída</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="saidaAvulso"
-                    name="saidaAvulso"
-                    required
-                  />
-                </div> -->
+
                 <div class="mb-3">
                   <label for="servicoAvulso" class="form-label"
                     >Serviço Adicional</label
@@ -289,40 +276,45 @@
     <script>
       //gerar comprovante alvulso
       function gerarComprovanteClienteAvulso() {
+        // Obtém os valores dos campos do formulário
         const nomeCliente = document.getElementById("clienteAvulso").value;
         const placaVeiculo = document.getElementById("placaAvulso").value;
         const veiculo = document.getElementById("veiculoAvulso").value;
         const entrada = document.getElementById("entradaAvulso").value;
-        const saida = document.getElementById("saidaAvulso").value;
         const servicoAdicional = document.getElementById("servicoAvulso").value;
         const valor = document.getElementById("valorAvulso").value;
         const razao = document.getElementById("razaoAvulso").value;
         const endereco = document.getElementById("enderecoAvulso").value;
 
+        // Cria o texto do comprovante
         const comprovanteTxt =
           `Comprovante de Cliente Avulso\n\n` +
           `Nome do Cliente: ${nomeCliente}\n` +
           `Placa do Veículo: ${placaVeiculo}\n` +
           `Veículo: ${veiculo}\n` +
           `Horário de Entrada: ${entrada}\n` +
-          `Horário de Saída: ${saida}\n` +
           `Serviço Adicional: ${servicoAdicional}\n` +
           `Valor: ${valor}\n` +
           `Razão Social: ${razao}\n` +
           `Endereço: ${endereco}\n`;
 
-        // Criação de um blob de texto
-        const blob = new Blob([comprovanteTxt], { type: "text/plain" });
-        const url = URL.createObjectURL(blob);
+        // Cria um Blob com o texto do comprovante
+        const blob = new Blob([comprovanteTxt], {
+          type: "text/plain;charset=utf-8",
+        });
 
-        // Criação do link de download
+        // Cria um link temporário para download
         const link = document.createElement("a");
-        link.href = url;
+        link.href = URL.createObjectURL(blob);
         link.download = "comprovante-avulso.txt";
-        link.click();
 
-        // Limpeza do objeto URL
-        URL.revokeObjectURL(url);
+        // Adiciona o link ao DOM, clica nele e remove do DOM
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Libera o URL do Blob
+        URL.revokeObjectURL(link.href);
       }
     </script>
     <script>
@@ -380,7 +372,6 @@
             document.getElementById("veiculoAvulso").value = data.veiculo || "";
             document.getElementById("entradaAvulso").value =
               data.data_entrada + " " + data.horario_entrada || "";
-            document.getElementById("saidaAvulso").value = ""; // Assumindo que não há dado de saída fornecido
             document.getElementById("servicoAvulso").value =
               data.servico_adicional || "";
             document.getElementById("valorAvulso").value = ""; // Assumindo que não há dado de valor fornecido
@@ -390,7 +381,6 @@
           })
           .catch((error) => {
             console.error("Erro ao buscar dados do comprovante:", error);
-            alert("Erro ao buscar dados do comprovante.");
           });
       }
 

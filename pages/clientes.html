@@ -17,7 +17,7 @@
     />
     <link rel="stylesheet" href="../style/mobile.css" />
     <link rel="stylesheet" href="../style/style.css" />
-    <title>Clientes Avulsos</title>
+    <title>Cadastro de Clientes</title>
   </head>
   <body>
     <header>
@@ -112,6 +112,19 @@
             />
             <img src="../img/cifrao.png" alt="mensalidade" />
           </div>
+          <input
+            type="text"
+            id="mensalidade_pago"
+            class="form-control"
+            hidden
+          />
+          <input
+            type="text"
+            id="proxima_mensalidade"
+            class="form-control"
+            hidden
+          />
+
           <div class="col-12 d-flex justify-content-center">
             <button type="submit" class="btn btn-primary btn-custom">
               Enviar
@@ -194,7 +207,6 @@
         <p class="mb-0">© 2024 One Park. Todos os direitos reservados.</p>
       </div>
     </footer>
-
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // Função para converter letras em maiúsculas enquanto o usuário digita
@@ -224,14 +236,40 @@
               return;
             }
 
+            // Preenche os campos hidden com os valores desejados
+            const mensalistaValue = document.getElementById("mensalista").value;
+            document.getElementById("proxima_mensalidade").value =
+              mensalistaValue;
+            document.getElementById("mensalidade_pago").value = 0;
+
+            // Depuração: Verifica os valores dos campos hidden
+            console.log("mensalistaValue:", mensalistaValue);
+            console.log(
+              "proxima_mensalidade:",
+              document.getElementById("proxima_mensalidade").value
+            );
+            console.log(
+              "mensalidade_pago:",
+              document.getElementById("mensalidade_pago").value
+            );
+
+            // Cria o objeto de dados a ser enviado
             const data = {
               cliente: clienteInput.value,
               telefone: document.getElementById("tel").value,
               veiculo: document.getElementById("veiculo").value,
               placa: placaInput.value,
-              mensalista: document.getElementById("mensalista").value,
+              mensalista: mensalistaValue,
               mensalidade: document.getElementById("mensalidade").value,
+              proxima_mensalidade_data: document.getElementById(
+                "proxima_mensalidade"
+              ).value,
+              mensalidade_pago:
+                document.getElementById("mensalidade_pago").value,
             };
+
+            // Depuração: Verifica o objeto de dados antes do envio
+            console.log("Dados enviados:", data);
 
             fetch(
               "https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes",
@@ -256,6 +294,7 @@
           });
       });
     </script>
+
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"

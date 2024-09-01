@@ -255,9 +255,15 @@
         }
 
         Promise.all([
-          fetchData("https://oneparkestacionamento.pythonanywhere.com/avulso-saida-all"),
-          fetchData("https://oneparkestacionamento.pythonanywhere.com/cadastro-clientes"),
-          fetchData("https://oneparkestacionamento.pythonanywhere.com/avulso-entrada"),
+          fetchData(
+            "https://oneparkestacionamento.pythonanywhere.com/avulso-saida-all"
+          ),
+          fetchData(
+            "https://oneparkestacionamento.pythonanywhere.com/clientes"
+          ),
+          fetchData(
+            "https://oneparkestacionamento.pythonanywhere.com/avulso-entrada"
+          ),
         ]).then(([saida, clientes, entrada]) => {
           const resultsDiv = document.getElementById("results");
           resultsDiv.innerHTML = "";
@@ -366,7 +372,10 @@
 
           resultsDiv.appendChild(
             createList("Saída", filterDataByName(saida), (item) => {
-              deleteItem("https://oneparkestacionamento.pythonanywhere.com/avulso-saida", item.id);
+              deleteItem(
+                "https://oneparkestacionamento.pythonanywhere.com/avulso-saida-all",
+                item.id
+              );
             })
           );
 
@@ -381,7 +390,10 @@
 
           resultsDiv.appendChild(
             createList("Entrada", filterDataByName(entrada), (item) => {
-              deleteItem("https://oneparkestacionamento.pythonanywhere.com/avulso-entrada", item.id);
+              deleteItem(
+                "https://oneparkestacionamento.pythonanywhere.com/avulso-entrada",
+                item.id
+              );
             })
           );
         });
